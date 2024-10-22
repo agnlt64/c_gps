@@ -3,6 +3,6 @@ Programme en C réalisé dans le cadre des SAÉs 1.01 & 1.02 de l'IUT informatiq
 
 # Build
 ```console
-gcc src/main.c -o main
+gcc src/*.c -o main
 ./main tests/data.csv
 ```

@@ -26,6 +26,18 @@ bool gps_ok(GPS_Data data)
     return data.name != NULL && data.code != -1 && data.latitude != -1 && data.longitude != -1;
 }
 
+void print_gps_arr(GPS_Data data[])
+{
+    for (int i = 0; i < MAX_FILE_SIZE; i++)
+    {
+        if (gps_ok(data[i]))
+        {
+            print_gps_data(data[i]);
+            printf("------------------\n");
+        }
+    }
+}
+
 void read_csv(FILE* file, GPS_Data gps_data_arr[])
 {
     size_t i = 0;
@@ -88,11 +100,7 @@ int main(int argc, char* argv[])
 
     read_csv(file, data);
 
-    for (int i = 0; i < MAX_FILE_SIZE; i++)
-    {
-        if (gps_ok(data[i]))
-        print_gps_data(data[i]);
-    }
+    print_gps_arr(data);
 
     fclose(file);
     free(data);

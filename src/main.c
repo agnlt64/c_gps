@@ -8,13 +8,12 @@
 
 #define BUF_SIZE 256
 
-void read_csv(FILE* file, GPS_Data gps_data_arr[])
+void read_csv(FILE* file, City_Array city_arr)
 {
-    size_t i = 0;
     while (!feof(file))
     {
         size_t col_index = 0;
-        GPS_Data data = {0};
+        City data = {0};
 
         char buf[BUF_SIZE];
         fgets(buf, BUF_SIZE, file);
@@ -50,8 +49,7 @@ void read_csv(FILE* file, GPS_Data gps_data_arr[])
             token = strtok(NULL, ";");
             col_index = (col_index + 1) % 4;
         }
-        gps_data_arr[i] = data;
-        i++;
+        city_array_add(&city_arr, data);
     }
 }
 
@@ -66,14 +64,15 @@ int main(int argc, char* argv[])
     char* csv_file = argv[1];
 
     FILE* file = fopen(csv_file, "r");
-    GPS_Data* data = malloc(MAX_FILE_SIZE * sizeof(GPS_Data));
+    City_Array city_arr;
+    city_array_init(&city_arr);
 
-    read_csv(file, data);
+    read_csv(file, city_arr);
 
-    repl(data);
+    repl(city_arr);
 
     fclose(file);
-    free(data);
+    free(city_arr.items);
 
     return 0;
 }

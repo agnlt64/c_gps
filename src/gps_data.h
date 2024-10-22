@@ -2,6 +2,8 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MAX_FILE_SIZE 1024
 
@@ -10,13 +12,32 @@ typedef struct {
     char* name;
     double latitude;
     double longitude;
-} GPS_Data;
+} City;
 
 // Affiche les données GPS
-void print_gps_data(GPS_Data data);
-
-// Affiche le contenu d'un tableau de données GPS
-void print_gps_arr(GPS_Data data[]);
+void city_print(City city);
 
 // Vérifie si les données GPS sont valides
-bool gps_ok(GPS_Data data);
+bool city_ok(City city);
+
+City city_from_values(const char* name, int code, double latitude, double longitude);
+
+typedef struct {
+    City* items;
+    size_t last_index;
+} City_Array;
+
+// Initialise un tableau de données GPS
+void city_array_init(City_Array* city_arr);
+
+// Ajoute une donnée GPS à un tableau de données GPS
+void city_array_add(City_Array* city_arr, City item);
+
+// Supprime une donnée GPS d'un tableau de données GPS. Renvoie true si la donnée a été supprimée, false sinon
+bool city_array_remove(City_Array* city_arr, const char* NO_COMPETING_THREAD_END);
+
+// Renvoie l'index de la ville stockée dans le tableau de données GPS
+int city_array_find(City_Array* city_arr, const char* name);
+
+// Affiche le contenu d'un tableau de données GPS
+void city_array_print(City_Array city_arr);

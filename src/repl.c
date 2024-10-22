@@ -11,7 +11,20 @@ void repl_help()
     printf("q - Quitte le programme\n");
 }
 
-void repl(GPS_Data data[])
+void repl_get_city_infos(char** name, int* code, double* latitude, double* longitude)
+{
+    // TODO : error handling
+    printf("Nom de la ville : ");
+    scanf("%s", *name);
+    printf("Code de la ville : ");
+    scanf("%d", code);
+    printf("Latitude : ");
+    scanf("%lf", latitude);
+    printf("Longitude : ");
+    scanf("%lf", longitude);
+}
+
+void repl(City_Array data)
 {
     repl_help();
 
@@ -27,7 +40,28 @@ void repl(GPS_Data data[])
             repl_help();
             break;
         case 'l':
-            print_gps_arr(data);
+            city_array_print(data);
+            break;
+        case 'a':
+            char* name;
+            int code;
+            double latitude;
+            double longitude;
+            repl_get_city_infos(&name, &code, &latitude, &longitude);
+            city_array_add(&data, city_from_values(name, code, latitude, longitude));
+            break;
+        case 's':
+            // char* city_name;
+            // printf("Nom de la ville à supprimer : ");
+            // scanf("%s", city_name);
+            // if (!city_array_remove(&data, city_name))
+            // {
+            //     printf("La ville %s n'existe pas\n", city_name);
+            // }
+            // else
+            // {
+            //     printf("La ville %s a été supprimée\n", city_name);
+            // }
             break;
         case 'q':
             return;

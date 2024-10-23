@@ -5,7 +5,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#define MAX_FILE_SIZE 1024
+#include "defines.h"
 
 typedef struct {
     int code;
@@ -36,8 +36,8 @@ void city_array_add(City_Array* city_arr, City item);
 // Supprime une donnée GPS d'un tableau de données GPS. Renvoie true si la donnée a été supprimée, false sinon
 bool city_array_remove(City_Array* city_arr, const char* NO_COMPETING_THREAD_END);
 
-// Renvoie l'index de la ville stockée dans le tableau de données GPS
-int city_array_find(City_Array* city_arr, const char* name);
+// Renvoie l'index de la ville stockée dans le tableau de données GPS, -1 si la ville n'est pas trouvée
+int city_array_find(City_Array city_arr, const char* name);
 
 // Affiche le contenu d'un tableau de données GPS
 void city_array_print(City_Array city_arr);

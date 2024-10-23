@@ -1,4 +1,6 @@
 #include "repl.h"
+#include "city.h"
+#include "defines.h"
 
 void repl_help()
 {
@@ -11,11 +13,10 @@ void repl_help()
     printf("q - Quitte le programme\n");
 }
 
-void repl_get_city_infos(char** name, int* code, double* latitude, double* longitude)
+void repl_get_city_infos(char* name, int* code, double* latitude, double* longitude)
 {
     // TODO : error handling
-    printf("Nom de la ville : ");
-    scanf("%s", *name);
+    repl_get_city_name(name);
     printf("Code de la ville : ");
     scanf("%d", code);
     printf("Latitude : ");
@@ -24,7 +25,39 @@ void repl_get_city_infos(char** name, int* code, double* latitude, double* longi
     scanf("%lf", longitude);
 }
 
-void repl(City_Array data)
+void repl_get_city_name(char* name)
+{
+    printf("Nom de la ville : ");
+    scanf(" %[^\n]", name);
+}
+
+void repl_add_city(City_Array city_arr)
+{
+    char name[BUF_SIZE];
+    int code;
+    double latitude;
+    double longitude;
+    repl_get_city_infos(name, &code, &latitude, &longitude);
+    city_array_add(&city_arr, city_from_values(name, code, latitude, longitude));
+    printf("La ville `%s` a été ajoutée\n", name);
+}
+
+void repl_delete_city(City_Array city_arr)
+{
+    char name[BUF_SIZE];
+    do {
+        repl_get_city_name(name);
+
+        if (city_array_find(city_arr, name) == -1)
+            printf("La ville %s n'existe pas\n", name);
+
+    } while (city_array_find(city_arr, name) == -1);
+
+    if (city_array_remove(&city_arr, name))
+        printf("La ville `%s` a été supprimée\n", name);
+}
+
+void repl(City_Array city_arr)
 {
     repl_help();
 
@@ -40,28 +73,13 @@ void repl(City_Array data)
             repl_help();
             break;
         case 'l':
-            city_array_print(data);
+            city_array_print(city_arr);
             break;
         case 'a':
-            char* name;
-            int code;
-            double latitude;
-            double longitude;
-            repl_get_city_infos(&name, &code, &latitude, &longitude);
-            city_array_add(&data, city_from_values(name, code, latitude, longitude));
+            repl_add_city(city_arr);
             break;
         case 's':
-            // char* city_name;
-            // printf("Nom de la ville à supprimer : ");
-            // scanf("%s", city_name);
-            // if (!city_array_remove(&data, city_name))
-            // {
-            //     printf("La ville %s n'existe pas\n", city_name);
-            // }
-            // else
-            // {
-            //     printf("La ville %s a été supprimée\n", city_name);
-            // }
+            repl_delete_city(city_arr);
             break;
         case 'q':
             return;

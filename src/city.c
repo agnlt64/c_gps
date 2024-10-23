@@ -26,17 +26,17 @@ City city_from_values(const char* name, int code, double latitude, double longit
 void city_array_init(City_Array* city_arr)
 {
     city_arr->items = malloc(MAX_FILE_SIZE * sizeof(City));
-    city_arr->last_index = 0;
+    city_arr->count = 0;
 }
 
 void city_array_add(City_Array* city_arr, City city)
 {
-    city_arr->items[city_arr->last_index++] = city;
+    city_arr->items[city_arr->count++] = city;
 }
 
 int city_array_find(City_Array city_arr, const char* name)
 {
-    for (int i = 0; i <= city_arr.last_index; i++)
+    for (int i = 0; i < city_arr.count; i++)
     {
         if (strcmp(city_arr.items[i].name, name) == 0)
         {
@@ -53,6 +53,7 @@ bool city_array_remove(City_Array* city_arr, const char* name)
     {
         free(city_arr->items[index].name);
         city_arr->items[index] = (City){0};
+        city_arr->count--;
         return true;
     }
     return false;
@@ -60,7 +61,7 @@ bool city_array_remove(City_Array* city_arr, const char* name)
 
 void city_array_print(City_Array city_arr)
 {
-    for (int i = 0; i <= city_arr.last_index; i++)
+    for (int i = 0; i < city_arr.count; i++)
     {
         if (city_ok(city_arr.items[i]))
         {

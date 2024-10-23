@@ -42,7 +42,7 @@ void read_csv(FILE* file, City_Array* city_arr)
             token = strtok(NULL, ";");
             col_index = (col_index + 1) % 4;
         }
-        city_arr->last_index = i++;
+        city_arr->count = i++;
         city_array_add(city_arr, city);
     }
 }

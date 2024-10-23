@@ -24,7 +24,7 @@ City city_from_values(const char* name, int code, double latitude, double longit
 
 typedef struct {
     City* items;
-    size_t last_index;
+    size_t count;
 } City_Array;
 
 // Initialise un tableau de données GPS

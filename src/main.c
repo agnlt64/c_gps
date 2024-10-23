@@ -22,7 +22,7 @@ int main(int argc, char* argv[])
 
     read_csv(file, &city_arr);
 
-    repl(city_arr);
+    repl(&city_arr);
 
     fclose(file);
     free(city_arr.items);

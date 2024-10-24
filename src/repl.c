@@ -120,7 +120,7 @@ void repl_search_city(City_Array* city_arr)
 void repl(City_Array* city_arr)
 {
     repl_help();
-
+    
     char command[BUF_SIZE];
 
     do {

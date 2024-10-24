@@ -38,5 +38,8 @@ void repl_modify_city(City_Array* city_arr);
 // Enlève une ville du tableau
 void repl_delete_city(City_Array* city_arr);
 
+// Affiche les coordonnées d'une ville
+void repl_search_city(City_Array* city_arr);
+
 // Fonction principale du REPL
 void repl(City_Array* city_arr);

@@ -5,13 +5,13 @@
 #include "city.h"
 
 #ifdef DEBUG
-#define NB_COMMANDS 7
+#define NB_COMMANDS 8
 #else
-#define NB_COMMANDS 6
+#define NB_COMMANDS 7
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
-    "a", "s", "m", "l", "h", "q", 
+    "a", "s", "m", "l", "h", "q", "r"
 #ifdef DEBUG
     "d",
 #endif

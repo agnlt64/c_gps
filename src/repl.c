@@ -9,6 +9,7 @@ void repl_help()
     printf("s - Supprime une ville\n");
     printf("m - Modifie les données d'une ville\n");
     printf("l - Liste les villes\n");
+    printf("r - Affiche la latitude et longitude d'une ville\n");
     printf("d - Debug\n");
     printf("h - Affiche l'aide\n");
     printf("q - Quitte le programme\n");
@@ -99,6 +100,23 @@ void repl_delete_city(City_Array* city_arr)
         printf("La ville `%s` a été supprimée\n", name);
 }
 
+void repl_search_city(City_Array* city_arr)
+{
+    char name[BUF_SIZE];
+    int index = -1;
+    do {
+        repl_get_city_name(name);
+
+        index = city_array_find(*city_arr,name);
+        if (index == -1)
+            printf("La ville %s n'existe pas\n", name);
+
+    } while (index == -1);
+
+    printf("Latitude : %lf\n",city_arr->items[index].latitude);
+    printf("Longitude : %lf\n",city_arr->items[index].longitude);
+}
+
 void repl(City_Array* city_arr)
 {
     repl_help();
@@ -127,6 +145,12 @@ void repl(City_Array* city_arr)
                 break;
             case 'm':
                 repl_modify_city(city_arr);
+                break;
+            case 'r':
+                repl_search_city(city_arr);
+
+
+
                 break;
 #ifdef DEBUG
             case 'd':

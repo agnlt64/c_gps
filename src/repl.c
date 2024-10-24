@@ -115,6 +115,7 @@ void repl(City_Array* city_arr)
             case 'd':
                 printf("----- DEBUG -----\n");
                 printf("city_arr.count : %zu\n", city_arr->count);
+                printf("city_arr.capacity : %zu\n", city_arr->capacity);
                 printf("-----------------\n");
                 break;
 #endif

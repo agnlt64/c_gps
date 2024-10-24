@@ -27,6 +27,7 @@ void city_array_init(City_Array* city_arr)
 {
     city_arr->items = malloc(MAX_FILE_SIZE * sizeof(City));
     city_arr->count = 0;
+    city_arr->capacity = MAX_FILE_SIZE;
 }
 
 void city_array_add(City_Array* city_arr, City city)
@@ -53,6 +54,10 @@ bool city_array_remove(City_Array* city_arr, const char* name)
     {
         free(city_arr->items[index].name);
         city_arr->items[index] = (City){0};
+        for (size_t i = index; i < city_arr->count - 1; i++)
+        {
+            city_arr->items[i] = city_arr->items[i + 1];
+        }
         city_arr->count--;
         return true;
     }

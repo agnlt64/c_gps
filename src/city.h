@@ -25,18 +25,19 @@ City city_from_values(const char* name, int code, double latitude, double longit
 typedef struct {
     City* items;
     size_t count;
+    size_t capacity;
 } City_Array;
 
-// Initialise un tableau de données GPS
+// Initialise un tableau dynamique de villes
 void city_array_init(City_Array* city_arr);
 
-// Ajoute une donnée GPS à un tableau de données GPS
+// Ajoute une ville au tableau dynamique
 void city_array_add(City_Array* city_arr, City item);
 
-// Supprime une donnée GPS d'un tableau de données GPS. Renvoie true si la donnée a été supprimée, false sinon
+// Supprime ville du tableau. Renvoie true si la donnée a été supprimée, false sinon
 bool city_array_remove(City_Array* city_arr, const char* NO_COMPETING_THREAD_END);
 
-// Renvoie l'index de la ville stockée dans le tableau de données GPS, -1 si la ville n'est pas trouvée
+// Renvoie l'index de la ville stockée dans le tableau, -1 si la ville n'est pas trouvée
 int city_array_find(City_Array city_arr, const char* name);
 
 // Affiche le contenu d'un tableau de données GPS

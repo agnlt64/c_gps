@@ -11,7 +11,7 @@
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
-    "a", "s", "m", "l", "h", "q", "r"
+    "a", "s", "m", "l", "h", "q", "r",
 #ifdef DEBUG
     "d",
 #endif

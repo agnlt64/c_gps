@@ -52,22 +52,36 @@ void repl_add_city(City_Array* city_arr, bool modified)
     double longitude;
     repl_get_city_infos(name, &code, &latitude, &longitude);
     city_array_add(city_arr, city_from_values(name, code, latitude, longitude));
-    if (!modified) printf("La ville `%s` a été ajoutée.\n", name);
-    else printf("La ville `%s` a été modifiée.\n", name);
+    if (!modified)
+        printf("La ville `%s` a été ajoutée.\n", name);
+    else
+        printf("La ville `%s` a été modifiée.\n", name);
 }
 
 void repl_modify_city(City_Array* city_arr)
 {
     char name[BUF_SIZE];
+    int index = -1;
     do {
         repl_get_city_name(name);
 
-        if (city_array_find(*city_arr, name) == -1)
+        index = city_array_find(*city_arr, name);
+        if (index == -1)
             printf("La ville %s n'existe pas\n", name);
 
-    } while (city_array_find(*city_arr, name) == -1);
+    } while (index == -1);
 
-    repl_add_city(city_arr, true);
+    int code;
+    double latitude, longitude;
+
+    printf("Nouveau code : ");
+    scanf("%d", &code);
+    printf("Nouvelle latitude : ");
+    scanf("%lf", &latitude);
+    printf("Nouvelle longitude : ");
+    scanf("%lf", &longitude);
+    city_arr->items[index] = city_from_values(name, code, latitude, longitude);
+    printf("La ville `%s` a été modifiée.\n", name);
 }
 
 void repl_delete_city(City_Array* city_arr)
@@ -111,6 +125,9 @@ void repl(City_Array* city_arr)
             case 's':
                 repl_delete_city(city_arr);
                 break;
+            case 'm':
+                repl_modify_city(city_arr);
+                break;
 #ifdef DEBUG
             case 'd':
                 printf("----- DEBUG -----\n");
@@ -119,8 +136,6 @@ void repl(City_Array* city_arr)
                 printf("-----------------\n");
                 break;
 #endif
-            case 'm':
-                break;
             case 'q':
                 return;
             default:

@@ -42,3 +42,6 @@ int city_array_find(City_Array city_arr, const char* name);
 
 // Affiche le contenu d'un tableau de données GPS
 void city_array_print(City_Array city_arr);
+
+// Renvoie la distance à vol d'oiseau entre deux villes 
+double city_distance(City city1, City city2);

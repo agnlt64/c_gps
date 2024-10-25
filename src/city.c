@@ -23,10 +23,23 @@ City city_from_values(const char* name, int code, double latitude, double longit
     };
 }
 
+double city_distance(City city1, City city2) 
+{
+    double lA   = city1.longitude * TO_RAD;
+    double lB   = city2.longitude * TO_RAD;
+    double phiA = city1.latitude  * TO_RAD;
+    double phiB = city2.latitude  * TO_RAD;
+
+    double delta = lB-lA;
+
+    double distance = acos(sin(phiA) * sin(phiB) + cos(phiA) * cos(phiB) * cos(delta)) * EARTH_RADIUS ;
+    return distance;
+}
+
 char* city_to_csv(City city)
 {
     char* buffer = malloc(BUF_SIZE);
-    sprintf(buffer, "%d,%s,%f,%f", city.code, city.name, city.latitude, city.longitude);
+    snprintf(buffer, BUF_SIZE, "%d;%s;%lf;%lf", city.code, city.name, city.latitude, city.longitude);
     return buffer;
 }
 
@@ -72,6 +85,8 @@ bool city_array_remove(City_Array* city_arr, const char* name)
 char* city_arr_to_csv(City_Array city_arr)
 {
     char* buffer = malloc(city_arr.count * BUF_SIZE);
+    buffer[0] = '\0';
+
     for (int i = 1; i < city_arr.count; i++)
     {
         char* city_csv = city_to_csv(city_arr.items[i]);
@@ -93,17 +108,4 @@ void city_array_print(City_Array city_arr)
             printf("------------------------\n");
         }
     }
-}
-
-double city_distance(City city1, City city2) 
-{
-    double lA = city1.longitude * TO_RAD;
-    double lB = city2.longitude * TO_RAD;
-    double phiA = city1.latitude * TO_RAD;
-    double phiB = city2.latitude * TO_RAD;
-
-    double delta = lB-lA;
-
-    double distance = acos(sin(phiA) * sin(phiB) + cos(phiA) * cos(phiB) * cos(delta)) * EARTH_RADIUS ;
-    return distance;
 }

@@ -8,8 +8,8 @@
 #include "defines.h"
 
 typedef struct {
-    int code;
-    char* name;
+    int    code;
+    char*  name;
     double latitude;
     double longitude;
 } City;

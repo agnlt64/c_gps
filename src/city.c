@@ -69,6 +69,20 @@ bool city_array_remove(City_Array* city_arr, const char* name)
     return false;
 }
 
+char* city_arr_to_csv(City_Array city_arr)
+{
+    char* buffer = malloc(city_arr.count * BUF_SIZE);
+    for (int i = 1; i < city_arr.count; i++)
+    {
+        char* city_csv = city_to_csv(city_arr.items[i]);
+        strcat(buffer, city_csv);
+        free(city_csv);
+        if (i < city_arr.count - 1)
+            strcat(buffer, "\n");
+    }
+    return buffer;
+}
+
 void city_array_print(City_Array city_arr)
 {
     for (int i = 0; i < city_arr.count; i++)

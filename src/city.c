@@ -32,7 +32,7 @@ void city_array_init(City_Array* city_arr)
 
 void city_array_add(City_Array* city_arr, City city)
 {
-    if (city_arr->count >= city_arr->capacity)
+    if (city_arr->count >= city_arr->   capacity)
         city_arr->items = realloc(city_arr->items, city_arr->capacity * sizeof(city_arr->items));
     city_arr->items[city_arr->count++] = city;
 }
@@ -72,4 +72,17 @@ void city_array_print(City_Array city_arr)
             printf("------------------------\n");
         }
     }
+}
+
+double city_distance(City city1, City city2) 
+{
+    double lA = city1.longitude * TO_RAD;
+    double lB = city2.longitude * TO_RAD;
+    double phiA = city1.latitude * TO_RAD;
+    double phiB = city2.latitude * TO_RAD;
+
+    double delta = lB-lA;
+
+    double distance = acos(sin(phiA) * sin(phiB) + cos(phiA) * cos(phiB) * cos(delta)) * EARTH_RADIUS ;
+    return distance;
 }

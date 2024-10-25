@@ -10,6 +10,7 @@ void repl_help()
     printf("m - Modifie les données d'une ville\n");
     printf("l - Liste les villes\n");
     printf("o - Calcule la distance à vol d'oiseau entre 2 villes\n");
+    printf("e - Exporte les données dans un fichier CSV\n");
     printf("r - Affiche la latitude et longitude d'une ville\n");
     printf("d - Debug\n");
     printf("h - Affiche l'aide\n");
@@ -150,6 +151,27 @@ void repl_distance(City_Array city_arr)
     printf("La distance à vol d'oiseau entre %s et %s est de %lf km.\n", city1.name, city2.name, city_distance(city1, city2));
 }
 
+void repl_dump_to_csv(City_Array city_arr)
+{
+    char name[BUF_SIZE];
+    printf("Nom du fichier : ");
+    scanf(" %[^\n]", &name);
+    
+    FILE* file = fopen(name, "w");
+    if (file == NULL)
+    {
+        printf("Erreur lors de l'ouverture du fichier `%s`\n", name);
+        return;
+    }
+    fprintf(file, "code;name;latitude;longitude\n");
+    char* csv = city_arr_to_csv(city_arr);
+    fprintf(file, "%s", csv);
+    fclose(file);
+    
+    free(csv);
+    printf("Contenu sauvegardé dans `%s`.\n", name);
+}
+
 void repl(City_Array *city_arr)
 {
     repl_help();
@@ -185,6 +207,9 @@ void repl(City_Array *city_arr)
                 break;
             case 'o':
                 repl_distance(*city_arr);
+                break;
+            case 'e':
+                repl_dump_to_csv(*city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

@@ -23,6 +23,13 @@ City city_from_values(const char* name, int code, double latitude, double longit
     };
 }
 
+char* city_to_csv(City city)
+{
+    char* buffer = malloc(BUF_SIZE);
+    sprintf(buffer, "%d,%s,%f,%f", city.code, city.name, city.latitude, city.longitude);
+    return buffer;
+}
+
 void city_array_init(City_Array* city_arr)
 {
     city_arr->items = malloc(MAX_FILE_SIZE * sizeof(City));

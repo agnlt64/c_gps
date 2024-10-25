@@ -20,7 +20,14 @@ void city_print(City city);
 // Vérifie si les données GPS sont valides
 bool city_ok(City city);
 
+// Crée une ville à partir de valeurs
 City city_from_values(const char* name, int code, double latitude, double longitude);
+
+// Renvoie la distance à vol d'oiseau entre deux villes 
+double city_distance(City city1, City city2);
+
+// Convertit une ville en chaîne de caractères CSV
+char* city_to_csv(City city);
 
 typedef struct {
     City* items;
@@ -43,5 +50,5 @@ int city_array_find(City_Array city_arr, const char* name);
 // Affiche le contenu d'un tableau de données GPS
 void city_array_print(City_Array city_arr);
 
-// Renvoie la distance à vol d'oiseau entre deux villes 
-double city_distance(City city1, City city2);
+// Convertit un tableau de villes en données CSV
+char* city_arr_to_csv(City_Array city_arr);

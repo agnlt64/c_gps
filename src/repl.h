@@ -5,13 +5,13 @@
 #include "city.h"
 
 #ifdef DEBUG
-#define NB_COMMANDS 8
+#define NB_COMMANDS 9
 #else
-#define NB_COMMANDS 7
+#define NB_COMMANDS 8
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
-    "a", "s", "m", "l", "h", "q", "r",
+    "a", "s", "m", "l", "h", "q", "r", "o",
 #ifdef DEBUG
     "d",
 #endif
@@ -43,3 +43,6 @@ void repl_search_city(City_Array* city_arr);
 
 // Fonction principale du REPL
 void repl(City_Array* city_arr);
+
+// Implemente la distance a vol d'oiseau
+void repl_distance(City_Array city_arr);

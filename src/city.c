@@ -32,6 +32,8 @@ void city_array_init(City_Array* city_arr)
 
 void city_array_add(City_Array* city_arr, City city)
 {
+    if (city_arr->count >= city_arr->capacity)
+        city_arr->items = realloc(city_arr->items, city_arr->capacity * sizeof(city_arr->items));
     city_arr->items[city_arr->count++] = city;
 }
 

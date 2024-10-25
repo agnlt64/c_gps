@@ -12,7 +12,9 @@ void repl_help()
     printf("o - Calcule la distance à vol d'oiseau entre 2 villes\n");
     printf("e - Exporte les données dans un fichier CSV\n");
     printf("r - Affiche la latitude et longitude d'une ville\n");
+#ifdef DEBUG
     printf("d - Debug\n");
+#endif
     printf("h - Affiche l'aide\n");
     printf("q - Quitte le programme\n");
 }

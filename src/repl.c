@@ -9,13 +9,14 @@ void repl_help()
     printf("s - Supprime une ville\n");
     printf("m - Modifie les données d'une ville\n");
     printf("l - Liste les villes\n");
+    printf("o - Calcule la distance à vol d'oiseau entre 2 villes\n");
     printf("r - Affiche la latitude et longitude d'une ville\n");
     printf("d - Debug\n");
     printf("h - Affiche l'aide\n");
     printf("q - Quitte le programme\n");
 }
 
-bool repl_is_valid_command(const char* command)
+bool repl_is_valid_command(const char *command)
 {
     for (int i = 0; i < NB_COMMANDS; i++)
     {
@@ -27,7 +28,7 @@ bool repl_is_valid_command(const char* command)
     return false;
 }
 
-void repl_get_city_infos(char* name, int* code, double* latitude, double* longitude)
+void repl_get_city_infos(char *name, int *code, double *latitude, double *longitude)
 {
     // TODO : error handling
     repl_get_city_name(name);
@@ -39,13 +40,13 @@ void repl_get_city_infos(char* name, int* code, double* latitude, double* longit
     scanf("%lf", longitude);
 }
 
-void repl_get_city_name(char* name)
+void repl_get_city_name(char *name)
 {
     printf("Nom de la ville : ");
     scanf(" %[^\n]", name);
 }
 
-void repl_add_city(City_Array* city_arr, bool modified)
+void repl_add_city(City_Array *city_arr, bool modified)
 {
     char name[BUF_SIZE];
     int code;
@@ -59,11 +60,12 @@ void repl_add_city(City_Array* city_arr, bool modified)
         printf("La ville `%s` a été modifiée.\n", name);
 }
 
-void repl_modify_city(City_Array* city_arr)
+void repl_modify_city(City_Array *city_arr)
 {
     char name[BUF_SIZE];
     int index = -1;
-    do {
+    do
+    {
         repl_get_city_name(name);
 
         index = city_array_find(*city_arr, name);
@@ -85,10 +87,11 @@ void repl_modify_city(City_Array* city_arr)
     printf("La ville `%s` a été modifiée.\n", name);
 }
 
-void repl_delete_city(City_Array* city_arr)
+void repl_delete_city(City_Array *city_arr)
 {
     char name[BUF_SIZE];
-    do {
+    do
+    {
         repl_get_city_name(name);
 
         if (city_array_find(*city_arr, name) == -1)
@@ -100,30 +103,61 @@ void repl_delete_city(City_Array* city_arr)
         printf("La ville `%s` a été supprimée\n", name);
 }
 
-void repl_search_city(City_Array* city_arr)
+void repl_search_city(City_Array *city_arr)
 {
     char name[BUF_SIZE];
     int index = -1;
-    do {
+    do
+    {
         repl_get_city_name(name);
 
-        index = city_array_find(*city_arr,name);
+        index = city_array_find(*city_arr, name);
         if (index == -1)
             printf("La ville %s n'existe pas\n", name);
 
     } while (index == -1);
 
-    printf("Latitude : %lf\n",city_arr->items[index].latitude);
-    printf("Longitude : %lf\n",city_arr->items[index].longitude);
+    printf("Latitude : %lf\n", city_arr->items[index].latitude);
+    printf("Longitude : %lf\n", city_arr->items[index].longitude);
 }
 
-void repl(City_Array* city_arr)
+//TODO optimiser 
+void repl_distance(City_Array city_arr)
+{
+    char name[BUF_SIZE];
+
+    int index1 = -1;
+    int index2 = -1;
+    do
+    {
+        repl_get_city_name(name);
+
+        index1 = city_array_find(city_arr, name);
+        if (index1 == -1)
+            printf("La ville %s n'existe pas\n", name);
+
+    } while (index1 == -1);
+    do
+    {
+        repl_get_city_name(name);
+
+        index2 = city_array_find(city_arr, name);
+        if (index2 == -1)
+            printf("La ville %s n'existe pas\n", name);
+    } while (index2 == -1);
+    City city1 = city_arr.items[index1];
+    City city2 = city_arr.items[index2];
+    printf("La distance à vol d'oiseau entre %s et %s est de %lf km.\n", city1.name, city2.name, city_distance(city1, city2));
+}
+
+void repl(City_Array *city_arr)
 {
     repl_help();
-    
+
     char command[BUF_SIZE];
 
-    do {
+    do
+    {
         printf("> ");
         scanf("%s", &command);
 
@@ -148,9 +182,9 @@ void repl(City_Array* city_arr)
                 break;
             case 'r':
                 repl_search_city(city_arr);
-
-
-
+                break;
+            case 'o':
+                repl_distance(*city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

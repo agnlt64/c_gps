@@ -98,14 +98,66 @@ char* city_arr_to_csv(City_Array city_arr)
     return buffer;
 }
 
+// fonction interne non documentée parce que j'ai la flemme
+void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len, bool newline)
+{
+    printf("+");
+    for (size_t i = 0; i <= code_max_len + name_max_len + lat_max_len + lon_max_len + 3; i++)
+    {
+        printf("-");
+        if (i == code_max_len + 1 || i == code_max_len + name_max_len + 3 || i == code_max_len + name_max_len + lat_max_len + 5)
+            printf("+");
+    }
+    if (newline)
+        printf("+\n");
+    else
+        printf("+");
+}
+
 void city_array_print(City_Array city_arr)
 {
-    for (int i = 0; i < city_arr.count; i++)
+    int code_max_len = 5;
+    int lat_max_len = strlen("latitude");
+    int lon_max_len = strlen("longitude") + 4;
+    int name_max_len = 0;
+    for (size_t i = 0; i < city_arr.count; i++)
     {
         if (city_ok(city_arr.items[i]))
         {
-            city_print(city_arr.items[i]);
-            printf("------------------------\n");
+            int len = strlen(city_arr.items[i].name);
+            if (len > name_max_len)
+                name_max_len = len;
         }
     }
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, false);
+
+    // affichage des noms de colonne
+    printf("\n| code  | nom");
+    for (size_t i = 0; i <= name_max_len - code_max_len + 2; i++)
+    {
+        printf(" ");
+    }
+    printf("| latitude | longitude |\n");
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
+
+    // affichage des données
+    for (size_t i = 0; i <= city_arr.count; i++)
+    {
+        if (city_ok(city_arr.items[i]))
+        {
+            City city = city_arr.items[i];
+            printf("| %d | %s ", city.code, city.name);
+            for (size_t i = 0; i < name_max_len - strlen(city.name); i++)
+            {
+                printf(" ");
+            }
+            if (city.longitude > 0)
+                printf("| %.5f |  %f |\n", city.latitude, city.longitude);
+            else
+                printf("| %.5f | %f |\n", city.latitude, city.longitude);
+        }
+    }
+
+    // affichage de la bordure inférieure du tableau
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
 }

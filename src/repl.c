@@ -31,16 +31,50 @@ bool repl_is_valid_command(const char *command)
     return false;
 }
 
+int int_len(int nb)
+{
+    if (nb < 10) return 1;
+    return 1 + (int)int_len(nb / 10);
+}
+
 void repl_get_city_infos(char *name, int *code, double *latitude, double *longitude)
 {
     // TODO : error handling
     repl_get_city_name(name);
-    printf("Code de la ville : ");
-    scanf("%d", code);
-    printf("Latitude : ");
-    scanf("%lf", latitude);
-    printf("Longitude : ");
-    scanf("%lf", longitude);
+    bool code_ok = false;
+    do {
+        printf("Code de la ville : ");
+        scanf("%d", code);
+
+        if (int_len(*code) == 5)
+            code_ok = true;
+        else
+            printf("Le code de la ville doit être composé de 5 chiffres.\n");
+    }
+    while (!code_ok);
+
+    bool lat_ok = false;
+    do {
+        printf("Latitude : ");
+        scanf("%lf", latitude);
+
+        if (*latitude >= -90 && *latitude <= 90)
+            lat_ok = true;
+        else
+            printf("La latitude doit être comprise entre -90 et 90.\n");
+    } while(!lat_ok);
+
+    bool lon_ok = false;
+    do {
+        printf("Longitude : ");
+        scanf("%lf", longitude);
+
+        if (*longitude >= -180 && *longitude <= 180)
+            lon_ok = true;
+        else
+            printf("La longitude doit être comprise entre -180 et 180.\n");
+
+    } while(!lon_ok);
 }
 
 void repl_get_city_name(char *name)

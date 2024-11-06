@@ -47,8 +47,12 @@ bool city_array_remove(City_Array* city_arr, const char* name);
 // Renvoie l'index de la ville stockée dans le tableau, -1 si la ville n'est pas trouvée
 int city_array_find(City_Array city_arr, const char* name);
 
-// Affiche le contenu d'un tableau de données GPS
+// Affiche le contenu du tableau de villes
 void city_array_print(City_Array city_arr);
+
+#ifdef DEBUG
+void city_array_print_debug(City_Array city_arr);
+#endif
 
 // Convertit un tableau de villes en données CSV
 char* city_arr_to_csv(City_Array city_arr);

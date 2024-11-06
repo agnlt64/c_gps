@@ -98,7 +98,109 @@ char* city_arr_to_csv(City_Array city_arr)
     return buffer;
 }
 
+/*
++------------+------------+-----------+-----------+---------+-----------+
+| numcoureur | nomcoureur | prenom    | ville     | salaire | numequipe |
++------------+------------+-----------+-----------+---------+-----------+
+|          1 | Pinot      | Thibaut   | Arras     |    4000 |         4 |
+|          2 | Pineau     | Cedric    | Lille     |    4000 |         4 |
+|          3 | Nibali     | Vincenzo  | Annecy    |    3200 |         3 |
+|          4 | Valverde   | Alejandro | Paris     |    2500 |         1 |
+|          5 | Chavanel   | Sylvain   | Pau       |    3700 |         2 |
+|          6 | Vockler    | Thomas    | Mulhouse  |    4000 |         4 |
+|          7 | Rolland    | Pierre    | Gerardmer |    3700 |         2 |
+|       -> 8 | Sagan <-   | Peter     | Evry <-   |    3000 |         1 |
+|          9 | Petit      | Adrien    | Gerardmer |    3200 |         3 |
++------------+------------+-----------+-----------+---------+-----------+
+*/
 void city_array_print(City_Array city_arr)
+{
+    int code_max_len = 5;
+    int lat_max_len, lon_max_len = 9; // max 2 chiffres avant la virgule + le point + 6 décimales
+    int name_max_len = 0;
+    for (size_t i = 0; i < city_arr.count; i++)
+    {
+        if (city_ok(city_arr.items[i]))
+        {
+            int len = strlen(city_arr.items[i].name);
+            if (len > name_max_len)
+                name_max_len = len;
+        }
+    }
+
+    // affichage de la bordure supérieure du tableau
+    printf("+");
+    for (size_t i = 0; i <= code_max_len + name_max_len + lat_max_len + lon_max_len + 2; i++)
+    {
+        printf("-");
+        if (i == code_max_len + 1 || i == code_max_len + name_max_len + 2 || i == code_max_len + name_max_len + lat_max_len + 3)
+            printf("+");
+    }
+    printf("+");
+
+    // affichage des noms de colonne
+    printf("\n| code  |");
+
+    printf(" nom");
+    for (size_t i = 0; i <= name_max_len - code_max_len + 1; i++)
+    {
+        printf(" ");
+    }
+    printf("| latitude");
+
+    for (size_t i = 0; i <= name_max_len - code_max_len - lat_max_len + 1; i++)
+    {
+        printf(" ");
+    }
+    printf("| longitude");
+
+    for (size_t i = 0; i <= name_max_len - code_max_len - lat_max_len - lon_max_len + 1; i++)
+    {
+        printf(" ");
+    }
+    printf("|\n");
+
+    printf("+");
+    for (size_t i = 0; i <= code_max_len + name_max_len + 2; i++)
+    {
+        printf("-");
+        if (i == code_max_len + 1)
+            printf("+");
+    }
+    printf("+\n");
+
+    // affichage des données
+    for (size_t i = 0; i <= city_arr.count; i++)
+    {
+        if (city_ok(city_arr.items[i]))
+        {
+            City city = city_arr.items[i];
+            printf("| %d | %s \n", city.code, city.name);
+        }
+    }
+
+    // affichage de la bordure inférieure du tableau
+    printf("+");
+    for (size_t i = 0; i <= code_max_len + name_max_len + 2; i++)
+    {
+        printf("-");
+        if (i == code_max_len + 1)
+            printf("+");
+    }
+    printf("+\n");
+
+    // for (int i = 0; i < city_arr.count; i++)
+    // {
+    //     if (city_ok(city_arr.items[i]))
+    //     {
+    //         city_print(city_arr.items[i]);
+    //         printf("------------------------\n");
+    //     }
+    // }
+}
+
+#ifdef DEBUG
+void city_array_print_debug(City_Array city_arr)
 {
     for (int i = 0; i < city_arr.count; i++)
     {
@@ -109,3 +211,4 @@ void city_array_print(City_Array city_arr)
         }
     }
 }
+#endif

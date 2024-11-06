@@ -161,17 +161,3 @@ void city_array_print(City_Array city_arr)
     // affichage de la bordure inférieure du tableau
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
 }
-
-#ifdef DEBUG
-void city_array_print_debug(City_Array city_arr)
-{
-    for (int i = 0; i < city_arr.count; i++)
-    {
-        if (city_ok(city_arr.items[i]))
-        {
-            city_print(city_arr.items[i]);
-            printf("------------------------\n");
-        }
-    }
-}
-#endif

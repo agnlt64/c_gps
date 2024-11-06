@@ -117,8 +117,8 @@ void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int l
 void city_array_print(City_Array city_arr)
 {
     int code_max_len = 5;
-    int lat_max_len = strlen("latitude");
-    int lon_max_len = strlen("longitude") + 4;
+    int lat_max_len = strlen("latitude") + 1;
+    int lon_max_len = strlen("longitude") + 6;
     int name_max_len = 0;
     for (size_t i = 0; i < city_arr.count; i++)
     {
@@ -137,7 +137,7 @@ void city_array_print(City_Array city_arr)
     {
         printf(" ");
     }
-    printf("| latitude | longitude |\n");
+    printf("| latitude  | longitude   |\n");
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
 
     // affichage des données
@@ -151,10 +151,23 @@ void city_array_print(City_Array city_arr)
             {
                 printf(" ");
             }
-            if (city.longitude > 0)
-                printf("| %.5f |  %f |\n", city.latitude, city.longitude);
+            if (city.latitude > 0)
+                printf("|  %.5f |", city.latitude);
             else
-                printf("| %.5f | %f |\n", city.latitude, city.longitude);
+                printf("| %.5f |", city.latitude);
+            if (city.longitude > 0)
+            {
+                for (size_t i = 0; i <= 4 - int_len((int)city.longitude); i++)
+                    printf(" ");
+                printf(" %.5f |", city.longitude);
+            }
+            else
+            {
+                for (size_t i = 0; i < 4 - int_len((int)fabs(city.longitude)) - 1; i++)
+                    printf(" ");
+                printf(" %f |", city.longitude);
+            }
+            printf("\n");
         }
     }
 

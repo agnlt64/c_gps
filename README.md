@@ -18,7 +18,8 @@ gcc src/*.c -o main # use -DDEBUG to have the special `d` command, useful to dis
 │       city.h
 │       csv.c
 │       csv.h
-│       defines.h
+│       utils.c
+│       utils.h
 │       main.c
 │       repl.c
 │       repl.h
@@ -68,7 +69,7 @@ Ces fichiers sont en charge de l'interaction avec l'utilisateur en ligne de comm
 Si le programme est compilé avec le flag `DEBUG`, la commande `d` affiche des informations de debug dans la console.  
 Les commandes qui modifient les données fonctionnent avec la fonction standard `scanf`, elles récupèrent les informations directement depuis la console.  
 
-`defines.h`  
+`utils.h`  
 Ce fichier contient les constantes utlisées partout dans le projet.
 
 `csv.c`, `csv.h`  

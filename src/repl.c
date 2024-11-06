@@ -1,6 +1,6 @@
 #include "repl.h"
 #include "city.h"
-#include "defines.h"
+#include "utils.h"
 
 void repl_help()
 {
@@ -29,12 +29,6 @@ bool repl_is_valid_command(const char *command)
         }
     }
     return false;
-}
-
-int int_len(int nb)
-{
-    if (nb < 10) return 1;
-    return 1 + (int)int_len(nb / 10);
 }
 
 void repl_get_city_infos(char *name, int *code, double *latitude, double *longitude)

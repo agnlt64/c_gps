@@ -52,6 +52,11 @@ typedef struct {
 ```
 `items` contient les instances de la structure `City`, `count` indique le nombre d'éléments dans le tableau dynamique et `capacity` indique la taille maximale du tableau. Si le tableau est plein, `capacity` est doublée.  
 
+`sorting.c`, `sorting.h`  
+Ces fichiers contiennent des algorithmes de tri pour trier les villes de différentes manières. Les fonctions préfixées d'un `_` sont uniquement à usage interne. La fonction `merge_sort` attend une fonction de comparaison personnalisée basée sur `compare_city_distance`. Voir le code de test de ce module dans `sorting.c` pour plus de détails d'utilisation. Pour tester ce module, compiler avec la commande suivante :
+```console
+gcc src/sorting.c src/city.c src/utils.c -o sorting -DTESTING
+```
 
 `repl.c`, `repl.h`  
 Ces fichiers sont en charge de l'interaction avec l'utilisateur en ligne de commande. La fonction principale est `repl()`, elle est en charge de l'interprétation des commandes. Liste des commandes :
@@ -69,8 +74,8 @@ Ces fichiers sont en charge de l'interaction avec l'utilisateur en ligne de comm
 Si le programme est compilé avec le flag `DEBUG`, la commande `d` affiche des informations de debug dans la console.  
 Les commandes qui modifient les données fonctionnent avec la fonction standard `scanf`, elles récupèrent les informations directement depuis la console.  
 
-`utils.h`  
-Ce fichier contient les constantes utlisées partout dans le projet.
+`utils.c`, `utils.c`  
+Ces fichiers contiennent des constantes et des fonction utiles partout dans le projet. La macro `len(x)` renvoie la taille du tableau `x` et la fonction `int_len(n)` renvoie le nombre de chiffres du nombre `n` sans passer par des chaines de caractères (pour des raisons de performance).
 
 `csv.c`, `csv.h`  
 Ces fichiers servent à manipuler des fichiers CSV.

@@ -61,15 +61,15 @@ gcc src/sorting.c src/city.c src/utils.c -o sorting -DTESTING
 `repl.c`, `repl.h`  
 Ces fichiers sont en charge de l'interaction avec l'utilisateur en ligne de commande. La fonction principale est `repl()`, elle est en charge de l'interprétation des commandes. Liste des commandes :
 ```console
-    a - Ajoute une ville
-    s - Supprime une ville
-    m - Modifie les données d'une ville
-    l - Liste les villes
-    o - Calcule la distance à vol d'oiseau entre 2 villes
-    e - Exporte les données dans un fichier CSV
-    r - Affiche la latitude et longitude d'une ville
-    h - Affiche l'aide
-    q - Quitte le programme
+a - Ajoute une ville
+s - Supprime une ville
+m - Modifie les données d'une ville
+l - Liste les villes
+o - Calcule la distance à vol d'oiseau entre 2 villes
+e - Exporte les données dans un fichier CSV
+r - Affiche la latitude et longitude d'une ville
+h - Affiche l'aide
+q - Quitte le programme
 ```
 Si le programme est compilé avec le flag `DEBUG`, la commande `d` affiche des informations de debug dans la console.  
 Les commandes qui modifient les données fonctionnent avec la fonction standard `scanf`, elles récupèrent les informations directement depuis la console.  

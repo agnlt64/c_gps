@@ -1,6 +1,7 @@
 #include "repl.h"
 #include "city.h"
 #include "utils.h"
+#include "sorting.h"
 
 void repl_help()
 {
@@ -12,6 +13,7 @@ void repl_help()
     printf("o - Calcule la distance à vol d'oiseau entre 2 villes\n");
     printf("e - Exporte les données dans un fichier CSV\n");
     printf("r - Affiche la latitude et longitude d'une ville\n");
+    printf("t - Trie les villes par rapport à leur distance au Pole Nord\n");
 #ifdef DEBUG
     printf("d - Debug\n");
 #endif
@@ -202,6 +204,22 @@ void repl_dump_to_csv(City_Array city_arr)
     printf("Contenu sauvegardé dans `%s`.\n", name);
 }
 
+// obligé de définir une fonction de comparaison pour le tri, car C ne supporte pas les fonctions anonymes
+int _compare(City city1, City city2)
+{
+    City reference_city = city_from_values("Pole Nord", 0, 90, 0);
+    return compare_city_distance(city1, city2, reference_city);
+}
+
+void repl_sort_by_distance(City_Array city_arr)
+{
+    City* work_arr = malloc(city_arr.count * sizeof(City));
+    merge_sort(city_arr.items, work_arr, city_arr.count, _compare);
+    free(work_arr);
+    city_array_print(city_arr);
+    printf("Les villes ont été triées par rapport à leur distance au Pole Nord.\n");
+}
+
 void repl(City_Array *city_arr)
 {
     repl_help();
@@ -240,6 +258,9 @@ void repl(City_Array *city_arr)
                 break;
             case 'e':
                 repl_dump_to_csv(*city_arr);
+                break;
+            case 't':
+                repl_sort_by_distance(*city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

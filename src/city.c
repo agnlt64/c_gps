@@ -152,7 +152,12 @@ void city_array_print(City_Array city_arr)
                 printf(" ");
             }
             if (city.latitude > 0)
-                printf("|  %.5f |", city.latitude);
+            {
+                if (int_len((int)city.latitude) == 1)
+                    printf("|   %.5f |", city.latitude);
+                else
+                    printf("|  %.5f |", city.latitude);
+            }
             else
                 printf("| %.5f |", city.latitude);
             if (city.longitude > 0)

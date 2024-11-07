@@ -5,13 +5,13 @@
 #include "city.h"
 
 #ifdef DEBUG
-#define NB_COMMANDS 10
+#define NB_COMMANDS 11
 #else
-#define NB_COMMANDS 9
+#define NB_COMMANDS 10
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
-    "a", "s", "m", "l", "h", "q", "r", "e", "o",
+    "a", "s", "m", "l", "h", "q", "r", "e", "o", "t",
 #ifdef DEBUG
     "d",
 #endif
@@ -43,6 +43,9 @@ void repl_search_city(City_Array* city_arr);
 
 // Enregistre le contenu du tableau dans un fichier CSV
 void repl_dump_to_csv(City_Array city_arr);
+
+// Trie les villes par rapport à leur distance au Pole Nord
+void repl_sort_by_distance(City_Array city_arr);
 
 // Fonction principale du REPL
 void repl(City_Array* city_arr);

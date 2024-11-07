@@ -18,13 +18,16 @@ gcc src/*.c -o main # use -DDEBUG to have the special `d` command, useful to dis
 │       city.h
 │       csv.c
 │       csv.h
-│       utils.c
-│       utils.h
 │       main.c
 │       repl.c
 │       repl.h
+│       sorting.c
+│       sorting.h
+│       utils.c
+│       utils.h
 │
 └───tests
+        capitales.csv
         data.csv
 ```
 Avant d'ajouter une fonction dans un fichier `.c`, il est impératif de la déclarer dans le fichier d'en-tête correspondant, avec un commentaire expliquant ce qu'elle fait.
@@ -67,6 +70,7 @@ m - Modifie les données d'une ville
 l - Liste les villes
 o - Calcule la distance à vol d'oiseau entre 2 villes
 e - Exporte les données dans un fichier CSV
+t - Trie les villes par rapport à leur distance au Pole Nord
 r - Affiche la latitude et longitude d'une ville
 h - Affiche l'aide
 q - Quitte le programme

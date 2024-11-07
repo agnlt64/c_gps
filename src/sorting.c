@@ -33,7 +33,7 @@ void merge_sort(City* arr, City* work_arr, int n, compare_func cmp)
     {
         for (size_t i = 0; i < n; i += 2 * width)
         {
-            merge(arr, i, fmin(i + width, n), fmin(i + 2 * width, n), work_arr, cmp);
+            _merge(arr, i, fmin(i + width, n), fmin(i + 2 * width, n), work_arr, cmp);
         }
         _copy(work_arr, arr, n);
     }

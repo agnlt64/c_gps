@@ -211,12 +211,13 @@ int _compare(City city1, City city2)
     return compare_city_distance(city1, city2, reference_city);
 }
 
-void repl_sort_by_distance(City_Array city_arr)
+void repl_sort_by_distance(City_Array* city_arr)
 {
-    City* work_arr = malloc(city_arr.count * sizeof(City));
-    merge_sort(city_arr.items, work_arr, city_arr.count, _compare);
+    City* work_arr = malloc(city_arr->count * sizeof(City));
+    merge_sort(city_arr->items, work_arr, city_arr->count, _compare);
     free(work_arr);
-    city_array_print(city_arr);
+    city_array_print(*city_arr);
+    city_arr->sorted = true;
     printf("Les villes ont été triées par rapport à leur distance au Pole Nord.\n");
 }
 
@@ -260,7 +261,10 @@ void repl(City_Array *city_arr)
                 repl_dump_to_csv(*city_arr);
                 break;
             case 't':
-                repl_sort_by_distance(*city_arr);
+                if (!city_arr->sorted)
+                    repl_sort_by_distance(city_arr);
+                else
+                    city_array_print(*city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

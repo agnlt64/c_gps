@@ -33,6 +33,7 @@ typedef struct {
     City* items;
     size_t count;
     size_t capacity;
+    bool sorted;
 } City_Array;
 
 // Initialise un tableau dynamique de villes

@@ -48,6 +48,7 @@ void city_array_init(City_Array* city_arr)
     city_arr->items = malloc(MAX_FILE_SIZE * sizeof(City));
     city_arr->count = 0;
     city_arr->capacity = MAX_FILE_SIZE;
+    city_arr->sorted = false;
 }
 
 void city_array_add(City_Array* city_arr, City city)

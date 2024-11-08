@@ -45,7 +45,7 @@ void repl_search_city(City_Array* city_arr);
 void repl_dump_to_csv(City_Array city_arr);
 
 // Trie les villes par rapport à leur distance au Pole Nord
-void repl_sort_by_distance(City_Array city_arr);
+void repl_sort_by_distance(City_Array* city_arr);
 
 // Fonction principale du REPL
 void repl(City_Array* city_arr);

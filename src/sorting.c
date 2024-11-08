@@ -1,6 +1,6 @@
 #include "sorting.h"
 
-void _merge(City* arr, int left, int right, int end, City* work_arr, compare_func cmp)
+static inline void _merge(City* arr, int left, int right, int end, City* work_arr, compare_func cmp)
 {
     int i = left, j = right;
 
@@ -19,23 +19,24 @@ void _merge(City* arr, int left, int right, int end, City* work_arr, compare_fun
     }
 }
 
-void _copy(City* from, City* to, int n)
-{
-    for (size_t i = 0; i < n; i++)
-    {
-        to[i] = from[i];
-    }
-}
-
 void merge_sort(City* arr, City* work_arr, int n, compare_func cmp)
 {
+    City* src = arr;
+    City* dest = work_arr;
     for (size_t width = 1; width < n; width *= 2)
     {
         for (size_t i = 0; i < n; i += 2 * width)
         {
-            _merge(arr, i, fmin(i + width, n), fmin(i + 2 * width, n), work_arr, cmp);
+            _merge(src, i, fmin(i + width, n), fmin(i + 2 * width, n), dest, cmp);
         }
-        _copy(work_arr, arr, n);
+        City* temp = src;
+        src = dest;
+        dest = temp;
+    }
+
+    if (src != arr)
+    {
+        memcpy(arr, src, n * sizeof(City));
     }
 }
 

@@ -151,27 +151,25 @@ void repl_search_city(City_Array *city_arr)
 void repl_distance(City_Array city_arr)
 {
     int code;
-
     int index1 = -1;
     int index2 = -1;
-    do
-    {
-        repl_get_city_code(city_arr, &code, false);
 
-        index1 = city_array_find(city_arr, code);
-        if (index1 == -1)
-            printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
+    for (int i = 0; i < 2; i++) {
+        do {
+            repl_get_city_code(city_arr, &code, false);
 
-    } while (index1 == -1);
-    do
-    {
-        repl_get_city_code(city_arr, &code, false);
+            if (i == 0) {
+                index1 = city_array_find(city_arr, code);
+                if (index1 == -1)
+                    printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
+            } else {
+                index2 = city_array_find(city_arr, code);
+                if (index2 == -1)
+                    printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
+            }
+        } while ((i == 0 && index1 == -1) || (i == 1 && index2 == -1));
+    }
 
-        index2 = city_array_find(city_arr, code);
-        if (index2 == -1)
-            printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
-
-    } while (index2 == -1);
     City city1 = city_arr.items[index1];
     City city2 = city_arr.items[index2];
     printf("La distance à vol d'oiseau entre \e[1;34m%s\e[0m et \e[1;34m%s\e[0m est de \e[4;34m%lfkm\e[0m.\n", city1.name, city2.name, city_distance(city1, city2));

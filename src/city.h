@@ -17,9 +17,6 @@ typedef struct {
     double longitude;
 } City;
 
-// Affiche les données GPS
-void city_print(City city);
-
 // Vérifie si les données GPS sont valides
 bool city_ok(City city);
 

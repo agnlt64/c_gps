@@ -1,20 +1,24 @@
 #include "city.h"
 
-void city_print(City city)
-{
-    printf("Code : %d\n", city.code);
-    printf("Ville : %s\n", city.name);
-    printf("Latitude : %f\n", city.latitude);
-    printf("Longitude : %f\n", city.longitude);
-}
-
 bool city_ok(City city)
 {
     return city.name != NULL && city.code != -1 && city.latitude != -1 && city.longitude != -1;
 }
 
+bool city_code_unique(City_Array city_array, int code)
+{
+    return city_array_find(city_array, code) == -1;
+}
+
 City city_from_values(const char* name, int code, double latitude, double longitude)
 {
+    if (code != CITY_CODE_BYPASS)
+    {
+        assert(lat_ok(latitude) && "La latitude doit être comprise entre -90 et 90");
+        assert(lon_ok(longitude) && "La longitude doit être comprise entre -180 et 180");
+        assert(code_ok(code) && "Le code doit être composé de 5 chiffres");
+    }
+
     return (City){
         .name = strdup(name),
         .code = code,
@@ -58,22 +62,21 @@ void city_array_add(City_Array* city_arr, City city)
     city_arr->items[city_arr->count++] = city;
 }
 
-int city_array_find(City_Array city_arr, const char* name)
+int city_array_find(City_Array city_arr, int code)
 {
     for (int i = 0; i < city_arr.count; i++)
     {
-        if (strcmp(city_arr.items[i].name, name) == 0)
+        if (city_arr.items[i].code == code)
             return i;
     }
     return -1;
 }
 
-bool city_array_remove(City_Array* city_arr, const char* name)
+bool city_array_remove(City_Array* city_arr, int code)
 {
-    int index = city_array_find(*city_arr, name);
+    int index = city_array_find(*city_arr, code);
     if (index != -1) 
     {
-        free(city_arr->items[index].name);
         city_arr->items[index] = (City){0};
         for (size_t i = index; i < city_arr->count - 1; i++)
             city_arr->items[i] = city_arr->items[i + 1];
@@ -133,21 +136,20 @@ void city_array_print(City_Array city_arr)
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, false);
 
     // affichage des noms de colonne
-    printf("\n| code  | nom");
+    printf("\n| \e[4;35mcode\e[0m  | \e[4;35mnom\e[0m");
     for (size_t i = 0; i <= name_max_len - code_max_len + 2; i++)
     {
         printf(" ");
     }
-    printf("| latitude  | longitude   |\n");
+    printf("| \e[4;35mlatitude\e[0m  | \e[4;35mlongitude\e[0m   |\n");
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
-
     // affichage des données
     for (size_t i = 0; i <= city_arr.count; i++)
     {
         if (city_ok(city_arr.items[i]))
         {
             City city = city_arr.items[i];
-            printf("| %d | %s ", city.code, city.name);
+            printf("| \e[4;33m%d\e[0m | \e[0;34m%s\e[0m ", city.code, city.name);
             for (size_t i = 0; i < name_max_len - strlen(city.name); i++)
             {
                 printf(" ");
@@ -155,23 +157,23 @@ void city_array_print(City_Array city_arr)
             if (city.latitude > 0)
             {
                 if (int_len((int)city.latitude) == 1)
-                    printf("|   %.5f |", city.latitude);
+                    printf("|   \e[1;36m%.5f\e[0m |", city.latitude);
                 else
-                    printf("|  %.5f |", city.latitude);
+                    printf("|  \e[1;36m%.5f\e[0m |", city.latitude);
             }
             else
-                printf("| %.5f |", city.latitude);
+                printf("| \e[1;36m%.5f\e[0m |", city.latitude);
             if (city.longitude > 0)
             {
                 for (size_t i = 0; i <= 4 - int_len((int)city.longitude); i++)
                     printf(" ");
-                printf(" %.5f |", city.longitude);
+                printf(" \e[1;36m%.5f\e[0m |", city.longitude);
             }
             else
             {
                 for (size_t i = 0; i < 4 - int_len((int)fabs(city.longitude)) - 1; i++)
                     printf(" ");
-                printf(" %f |", city.longitude);
+                printf(" \e[1;36m%f\e[0m |", city.longitude);
             }
             printf("\n");
         }

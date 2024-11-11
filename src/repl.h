@@ -24,13 +24,16 @@ void repl_help();
 bool repl_is_valid_command(const char* command);
 
 // Récupère les informations d'une ville à partir de la console
-void repl_get_city_infos(char* name, int* code, double* latitude, double* longitude);
+void repl_get_city_infos(City_Array city_arr, char* name, int* code, double* latitude, double* longitude);
 
 // Récupère le nom d'une ville à partir de la console
 void repl_get_city_name(char* name);
 
+// Récupère le code d'une ville à partir de la console
+void repl_get_city_code(City_Array city_arr, int* code, bool check_unique);
+
 // Ajoute une ville au tableau
-void repl_add_city(City_Array* city_arr, bool modified);
+void repl_add_city(City_Array* city_arr);
 
 // Modifie une ville si elle existe
 void repl_modify_city(City_Array* city_arr);

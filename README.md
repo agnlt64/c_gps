@@ -56,9 +56,9 @@ typedef struct {
 `items` contient les instances de la structure `City`, `count` indique le nombre d'éléments dans le tableau dynamique et `capacity` indique la taille maximale du tableau. Si le tableau est plein, `capacity` est doublée.  
 
 `sorting.c`, `sorting.h`  
-Ces fichiers contiennent des algorithmes de tri pour trier les villes de différentes manières. Les fonctions préfixées d'un `_` sont uniquement à usage interne. La fonction `merge_sort` attend une fonction de comparaison personnalisée basée sur `compare_city_distance`. Voir le code de test de ce module dans `sorting.c` pour plus de détails d'utilisation. Pour tester ce module, compiler avec la commande suivante :
+Ces fichiers contiennent des algorithmes de tri pour trier les villes de différentes manières. Les fonctions préfixées d'un `_` sont uniquement à usage interne. Deux algorithmes de tri sont implémentés : le `merge_sort` et le `cocktail_shaker_sort`. Par défaut, le `merge_sort` est utilisé. Pour utiliser le `cocktail_shaker_sort`, il faut définir la macro `COCKTAIL_SHAKER` lors de la compilation. Pour simplifier le code, les deux algorithmes sont réunis sous la même macro `sort(arr, cmp)`. `arr` est le tableau à trier et `cmp` est une fonction de comparaison personnalisée basée sur `compare_city_distance`. Voir le code de test de ce module dans `sorting.c` pour plus de détails d'utilisation. Pour tester ce module, compiler avec la commande suivante :
 ```console
-gcc src/sorting.c src/city.c src/utils.c -o sorting -DTESTING
+gcc src/sorting.c src/city.c src/utils.c -o sorting -DTESTING # -DCOCKTAIL_SHAKER pour le cocktail shaker sort
 ```
 
 `repl.c`, `repl.h`  

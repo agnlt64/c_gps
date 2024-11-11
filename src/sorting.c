@@ -47,10 +47,10 @@ static inline void _swap(City* a, City* b)
     *b = tmp;
 }
 
-void _cocktail_shaker_sort(City* arr, int n, compare_func cmp)
+void _cocktail_shaker_sort(City_Array* arr, compare_func cmp)
 {
     size_t begin = 0;
-    size_t end = n - 1;
+    size_t end = arr->count - 1;
 
     while (begin <= end)
     {
@@ -59,9 +59,9 @@ void _cocktail_shaker_sort(City* arr, int n, compare_func cmp)
 
         for (size_t i = begin; i < end; i++)
         {
-            if (cmp(arr[i], arr[i + 1]) < 0)
+            if (cmp(arr->items[i], arr->items[i + 1]) < 0)
             {
-                _swap(&arr[i], &arr[i + 1]);
+                _swap(&arr->items[i], &arr->items[i + 1]);
                 new_end = i;
             }
         }
@@ -70,9 +70,9 @@ void _cocktail_shaker_sort(City* arr, int n, compare_func cmp)
 
         for (size_t i = end; i > begin; i--)
         {
-            if (cmp(arr[i - 1], arr[i]) < 0)
+            if (cmp(arr->items[i - 1], arr->items[i]) < 0)
             {
-                _swap(&arr[i - 1], &arr[i]);
+                _swap(&arr->items[i - 1], &arr->items[i]);
                 new_begin = i;
             }
         }

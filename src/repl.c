@@ -33,44 +33,27 @@ bool repl_is_valid_command(const char *command)
     return false;
 }
 
-void repl_get_city_infos(char *name, int *code, double *latitude, double *longitude)
+void repl_get_city_infos(City_Array city_arr, char *name, int *code, double *latitude, double *longitude)
 {
-    // TODO : error handling
     repl_get_city_name(name);
-    bool code_ok = false;
-    do {
-        printf("Code de la ville : ");
-        scanf("%d", code);
+    repl_get_city_code(city_arr, code, true);
 
-        if (int_len(*code) == 5)
-            code_ok = true;
-        else
-            printf("Le code de la ville doit être composé de 5 chiffres.\n");
-    }
-    while (!code_ok);
-
-    bool lat_ok = false;
     do {
         printf("Latitude : ");
         scanf("%lf", latitude);
 
-        if (*latitude >= -90 && *latitude <= 90)
-            lat_ok = true;
-        else
+        if (!lat_ok(*latitude))
             printf("La latitude doit être comprise entre -90 et 90.\n");
-    } while(!lat_ok);
+    } while(!lat_ok(*latitude));
 
-    bool lon_ok = false;
     do {
         printf("Longitude : ");
         scanf("%lf", longitude);
 
-        if (*longitude >= -180 && *longitude <= 180)
-            lon_ok = true;
-        else
+        if (!lon_ok(*longitude))
             printf("La longitude doit être comprise entre -180 et 180.\n");
 
-    } while(!lon_ok);
+    } while(!lon_ok(*longitude));
 }
 
 void repl_get_city_name(char *name)
@@ -79,74 +62,82 @@ void repl_get_city_name(char *name)
     scanf(" %[^\n]", name);
 }
 
-void repl_add_city(City_Array *city_arr, bool modified)
+void repl_get_city_code(City_Array city_arr, int* code, bool check_unique)
 {
+    do {
+        printf("Code de la ville : ");
+        scanf("%d", code);
+
+        if (!code_ok(*code))
+            printf("Le code de la ville doit être composé de 5 chiffres.\n");
+        else if (check_unique && !city_code_unique(city_arr, *code))
+            printf("Une ville avec ce code existe déjà.\n");
+
+    } while (!code_ok(*code) || (check_unique && !city_code_unique(city_arr, *code)));
+}
+
+void repl_add_city(City_Array* city_arr)
+{ 
     char name[BUF_SIZE];
     int code;
     double latitude;
     double longitude;
-    repl_get_city_infos(name, &code, &latitude, &longitude);
+    repl_get_city_infos(*city_arr, name, &code, &latitude, &longitude);
     city_array_add(city_arr, city_from_values(name, code, latitude, longitude));
-    if (!modified)
-        printf("La ville `%s` a été ajoutée.\n", name);
-    else
-        printf("La ville `%s` a été modifiée.\n", name);
+    city_arr->sorted = false;
+    printf("La ville %s (code %d) a été ajoutée.\n", name, code);
 }
 
-void repl_modify_city(City_Array *city_arr)
+void repl_modify_city(City_Array* city_arr)
 {
-    char name[BUF_SIZE];
+    int code;
     int index = -1;
     do
     {
-        repl_get_city_name(name);
+        repl_get_city_code(*city_arr, &code, false);
 
-        index = city_array_find(*city_arr, name);
-        if (index == -1)
-            printf("La ville %s n'existe pas\n", name);
+        if ((index = city_array_find(*city_arr, code)) == -1)
+            printf("La ville avec le code %d n'existe pas\n", code);
 
     } while (index == -1);
 
-    int code;
+    char name[BUF_SIZE];
     double latitude, longitude;
 
-    printf("Nouveau code : ");
-    scanf("%d", &code);
-    printf("Nouvelle latitude : ");
-    scanf("%lf", &latitude);
-    printf("Nouvelle longitude : ");
-    scanf("%lf", &longitude);
+    repl_get_city_infos(*city_arr, name, &code, &latitude, &longitude);
     city_arr->items[index] = city_from_values(name, code, latitude, longitude);
-    printf("La ville `%s` a été modifiée.\n", name);
+    city_arr->sorted = false;
+    printf("La ville %s (code %d) a été modifiée.\n", name, code);
 }
 
 void repl_delete_city(City_Array *city_arr)
 {
-    char name[BUF_SIZE];
+    int code;
+    int index = -1;
     do
     {
-        repl_get_city_name(name);
+        repl_get_city_code(*city_arr, &code, false);
 
-        if (city_array_find(*city_arr, name) == -1)
-            printf("La ville %s n'existe pas\n", name);
+        if ((index = city_array_find(*city_arr, code)) == -1)
+            printf("La ville avec le code %d n'existe pas\n", code);
 
-    } while (city_array_find(*city_arr, name) == -1);
+    } while (index == -1);
 
-    if (city_array_remove(city_arr, name))
-        printf("La ville `%s` a été supprimée\n", name);
+    if (city_array_remove(city_arr, code))
+        printf("La ville avec le code %d a été supprimée\n", code);
+    city_arr->sorted = false;
 }
 
 void repl_search_city(City_Array *city_arr)
 {
-    char name[BUF_SIZE];
+    int code;
     int index = -1;
     do
     {
-        repl_get_city_name(name);
+        repl_get_city_code(*city_arr, &code, false);
 
-        index = city_array_find(*city_arr, name);
-        if (index == -1)
-            printf("La ville %s n'existe pas\n", name);
+        if ((index = city_array_find(*city_arr, code)) == -1)
+            printf("La ville avec le code %d n'existe pas\n", code);
 
     } while (index == -1);
 
@@ -157,26 +148,26 @@ void repl_search_city(City_Array *city_arr)
 //TODO optimiser 
 void repl_distance(City_Array city_arr)
 {
-    char name[BUF_SIZE];
+    int code;
 
     int index1 = -1;
     int index2 = -1;
     do
     {
-        repl_get_city_name(name);
+        repl_get_city_code(city_arr, &code, false);
 
-        index1 = city_array_find(city_arr, name);
+        index1 = city_array_find(city_arr, code);
         if (index1 == -1)
-            printf("La ville %s n'existe pas\n", name);
+            printf("La ville %s n'existe pas\n", code);
 
     } while (index1 == -1);
     do
     {
-        repl_get_city_name(name);
+        repl_get_city_code(city_arr, &code, false);
 
-        index2 = city_array_find(city_arr, name);
+        index2 = city_array_find(city_arr, code);
         if (index2 == -1)
-            printf("La ville %s n'existe pas\n", name);
+            printf("La ville avec le code %d n'existe pas\n", code);
     } while (index2 == -1);
     City city1 = city_arr.items[index1];
     City city2 = city_arr.items[index2];
@@ -207,7 +198,7 @@ void repl_dump_to_csv(City_Array city_arr)
 // obligé de définir une fonction de comparaison pour le tri, car C ne supporte pas les fonctions anonymes
 static inline int _compare(City city1, City city2)
 {
-    City reference_city = city_from_values("Pole Nord", 0, 90, 0);
+    City reference_city = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
     return compare_city_distance(city1, city2, reference_city);
 }
 
@@ -246,7 +237,7 @@ void repl(City_Array *city_arr)
                 city_array_print(*city_arr);
                 break;
             case 'a':
-                repl_add_city(city_arr, false);
+                repl_add_city(city_arr);
                 break;
             case 's':
                 repl_delete_city(city_arr);

@@ -213,9 +213,7 @@ static inline int _compare(City city1, City city2)
 
 void repl_sort_by_distance(City_Array* city_arr)
 {
-    City* work_arr = malloc(city_arr->count * sizeof(City));
-    sort(city_arr->items, work_arr, city_arr->count, _compare);
-    free(work_arr);
+    sort(city_arr, _compare);
     city_array_print(*city_arr);
     city_arr->sorted = true;
     printf("Les villes ont été triées par rapport à leur distance au Pole Nord.");

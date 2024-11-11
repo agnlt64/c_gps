@@ -144,12 +144,12 @@ void city_array_print(City_Array city_arr)
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, false);
 
     // affichage des noms de colonne
-    printf("\n| \e[1;36mcode\e[0m  | \e[1;36mnom\e[0m");
+    printf("\n| code  | nom");
     for (size_t i = 0; i <= name_max_len - code_max_len + 2; i++)
     {
         printf(" ");
     }
-    printf("| \e[1;36mlatitude\e[0m  | \e[1;36mlongitude\e[0m   |\n");
+    printf("| latitude  | longitude   |\n");
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
 
     // affichage des données
@@ -158,7 +158,7 @@ void city_array_print(City_Array city_arr)
         if (city_ok(city_arr.items[i]))
         {
             City city = city_arr.items[i];
-            printf("| \e[4;33m%d\e[0m | \e[0;34m%s\e[0m ", city.code, city.name);
+            printf("| %d | %s ", city.code, city.name);
             for (size_t i = 0; i < name_max_len - strlen(city.name); i++)
             {
                 printf(" ");
@@ -166,23 +166,23 @@ void city_array_print(City_Array city_arr)
             if (city.latitude > 0)
             {
                 if (int_len((int)city.latitude) == 1)
-                    printf("|   \e[1;36m%.5f\e[0m |", city.latitude);
+                    printf("|   %.5f |", city.latitude);
                 else
-                    printf("|  \e[1;36m%.5f\e[0m |", city.latitude);
+                    printf("|  %.5f |", city.latitude);
             }
             else
-                printf("| \e[1;36m%.5f\e[0m |", city.latitude);
+                printf("| %.5f |", city.latitude);
             if (city.longitude > 0)
             {
                 for (size_t i = 0; i <= 4 - int_len((int)city.longitude); i++)
                     printf(" ");
-                printf(" \e[1;36m%.5f\e[0m |", city.longitude);
+                printf(" %.5f |", city.longitude);
             }
             else
             {
                 for (size_t i = 0; i < 4 - int_len((int)fabs(city.longitude)) - 1; i++)
                     printf(" ");
-                printf(" \e[1;36m%f\e[0m |", city.longitude);
+                printf(" %f |", city.longitude);
             }
             printf("\n");
         }

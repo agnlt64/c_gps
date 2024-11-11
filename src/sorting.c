@@ -19,7 +19,7 @@ static inline void _merge(City* arr, int left, int right, int end, City* work_ar
     }
 }
 
-void merge_sort(City* arr, City* work_arr, int n, compare_func cmp)
+void _merge_sort(City* arr, City* work_arr, int n, compare_func cmp)
 {
     City* src = arr;
     City* dest = work_arr;
@@ -37,6 +37,47 @@ void merge_sort(City* arr, City* work_arr, int n, compare_func cmp)
     if (src != arr)
     {
         memcpy(arr, src, n * sizeof(City));
+    }
+}
+
+static inline void _swap(City* a, City* b)
+{
+    City tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+void _cocktail_shaker_sort(City* arr, int n, compare_func cmp)
+{
+    size_t begin = 0;
+    size_t end = n - 1;
+
+    while (begin <= end)
+    {
+        size_t new_begin = end;
+        size_t new_end = begin;
+
+        for (size_t i = begin; i < end; i++)
+        {
+            if (cmp(arr[i], arr[i + 1]) < 0)
+            {
+                _swap(&arr[i], &arr[i + 1]);
+                new_end = i;
+            }
+        }
+
+        end = new_end;
+
+        for (size_t i = end; i > begin; i--)
+        {
+            if (cmp(arr[i - 1], arr[i]) < 0)
+            {
+                _swap(&arr[i - 1], &arr[i]);
+                new_begin = i;
+            }
+        }
+
+        begin = new_begin;
     }
 }
 
@@ -59,7 +100,6 @@ int compare(City city1, City city2)
 
 int main()
 {
-
     City cities[] = {
         {1, "London", 51.5074, -0.1278},
         {2, "Tokyo", 35.6895, 139.6917},
@@ -85,10 +125,10 @@ int main()
         {23, "New York", 40.7128, -74.0060},
     };
     City sorted_cities[len(cities)];
-    merge_sort(cities, sorted_cities, len(cities), compare);
-    for (size_t i = 0; i < len(sorted_cities); i++)
+    sort(cities, sorted_cities, len(cities), compare);
+    for (size_t i = 0; i < len(cities); i++)
     {
-        printf("%s\n", sorted_cities[i].name);
+        printf("%s\n", cities[i].name);
     }
     return 0;
 }

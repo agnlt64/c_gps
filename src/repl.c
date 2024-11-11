@@ -205,7 +205,7 @@ void repl_dump_to_csv(City_Array city_arr)
 }
 
 // obligé de définir une fonction de comparaison pour le tri, car C ne supporte pas les fonctions anonymes
-int _compare(City city1, City city2)
+static inline int _compare(City city1, City city2)
 {
     City reference_city = city_from_values("Pole Nord", 0, 90, 0);
     return compare_city_distance(city1, city2, reference_city);
@@ -214,11 +214,16 @@ int _compare(City city1, City city2)
 void repl_sort_by_distance(City_Array* city_arr)
 {
     City* work_arr = malloc(city_arr->count * sizeof(City));
-    merge_sort(city_arr->items, work_arr, city_arr->count, _compare);
+    sort(city_arr->items, work_arr, city_arr->count, _compare);
     free(work_arr);
     city_array_print(*city_arr);
     city_arr->sorted = true;
-    printf("Les villes ont été triées par rapport à leur distance au Pole Nord.\n");
+    printf("Les villes ont été triées par rapport à leur distance au Pole Nord.");
+#ifdef COCKTAIL_SHAKER
+    printf(" (cocktail shaker)\n");
+#else
+    printf(" (merge sort)\n");
+#endif
 }
 
 void repl(City_Array *city_arr)

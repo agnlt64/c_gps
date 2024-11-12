@@ -19,7 +19,7 @@ void repl_help()
     printf("| d - Debug\e[0m                                                    |\n");
 #endif
     printf("| \e[1;32mh - Affiche l'aide\e[0m                                           |\n");
-    printf("| \e[1;31mq - Quitte le programme\e[0m\e[0m                                      |\n");
+    printf("| \e[1;31mq - Quitte le programme\e[0m                                      |\n");
     printf("+--------------------------------------------------------------+\n");
 }
 
@@ -126,7 +126,7 @@ void repl_delete_city(City_Array *city_arr)
     } while (index == -1);
 
     if (city_array_remove(city_arr, code))
-        printf("\e[1;31mLa ville avec le code %d a été supprimée\e[0m\n", code);
+        printf("\e[1;32mLa ville avec le code \e[1;31m%d\e[1;32m a été supprimée.\e[0m\n", code);
     city_arr->sorted = false;
 }
 
@@ -143,11 +143,10 @@ void repl_search_city(City_Array *city_arr)
 
     } while (index == -1);
 
-    printf("Latitude  : \e[1;34m%lf\n", city_arr->items[index].latitude);
-    printf("Longitude : \e[1;34m%lf\n", city_arr->items[index].longitude);
+    printf("\e[4;37mLatitude\e[0m  : \e[1;34m%lf\e[0m\n", city_arr->items[index].latitude);
+    printf("\e[4;37mLongitude\e[0m : \e[1;34m%lf\e[0m\n", city_arr->items[index].longitude);
 }
 
-//TODO optimiser 
 void repl_distance(City_Array city_arr)
 {
     int code;

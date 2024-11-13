@@ -243,6 +243,14 @@ static inline int _compare(City city1, City city2)
     return compare_city_distance(city1, city2, reference_city);
 }
 
+static inline int _compare_user(City city1, City city2, City reference_city)
+{
+    double distanceA = city_distance(reference_city, city1);
+    double distanceB = city_distance(reference_city, city2);
+
+    return (distanceA < distanceB) - (distanceA > distanceB);
+}
+
 void repl_sort_by_distance(City_Array* city_arr)
 {
     sort(city_arr, _compare);
@@ -254,6 +262,19 @@ void repl_sort_by_distance(City_Array* city_arr)
 #else
     printf(" \e[1;36m(merge sort)\e[0m\n");
 #endif
+}
+
+void repl_closest_to_me(City_Array* city_arr)
+{
+    double latitude, longitude;
+
+    printf("Entrez votre latitude : ");
+    scanf("%lf",&latitude);
+    printf("\nEntrez votre longitude : ");
+    scanf("%lf",&longitude);
+
+    City user = city_from_values("user",CITY_CODE_BYPASS,latitude,longitude);
+    // sort(city_arr,);
 }
 
 void repl(City_Array *city_arr)

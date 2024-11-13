@@ -103,7 +103,7 @@ char* city_arr_to_csv(City_Array city_arr)
 }
 
 // fonction interne non documentée parce que j'ai la flemme
-void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len, bool newline)
+static void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len, bool newline)
 {
     printf("+");
     for (size_t i = 0; i <= code_max_len + name_max_len + lat_max_len + lon_max_len + 3; i++)

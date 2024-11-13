@@ -11,10 +11,54 @@
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
-    "a", "s", "m", "l", "h", "q", "r", "e", "o", "t",
+    "a",
+    "s",
+    "m",
+    "l",
+    "r",
+    "e",
+    "o",
+    "t",
 #ifdef DEBUG
     "d",
 #endif
+    "h",
+    "q",
+};
+
+static const char* commands_description[NB_COMMANDS] = {
+    "Ajoute une ville",
+    "Supprime une ville",
+    "Modifie les données d'une ville",
+    "Liste les villes",
+    "Calcule la distance à vol d'oiseau entre 2 villes",
+    "Exporte les données dans un fichier CSV",
+    "Affiche la latitude et longitude d'une ville",
+    "Trie les villes par rapport à leur distance au Pole Nord",
+#ifdef DEBUG
+    "Debug",
+#endif
+    "Affiche l'aide",
+    "Quitte le programme",
+};
+
+// table des tailles de chaque description de commande.
+// normalement strlen() fait le job, mais on des fois
+// elle renvoie la taille + 1.
+static const int desc_sizes[NB_COMMANDS] = {
+    16,
+    18,
+    31,
+    16,
+    49,
+    39,
+    44,
+    56,
+#ifdef DEBUG
+    5,
+#endif
+    14,
+    19,
 };
 
 // Affiche la liste des commandes displonibles au sein du REPL

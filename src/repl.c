@@ -236,16 +236,10 @@ void repl_dump_to_csv(City_Array city_arr)
     printf("\e[1;32mContenu sauvegardé dans \e[4;31m`%s`\e[0m.\n", name);
 }
 
-// obligé de définir une fonction de comparaison pour le tri, car C ne supporte pas les fonctions anonymes
-static inline int _compare(City city1, City city2)
-{
-    City reference_city = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
-    return compare_city_distance(city1, city2, reference_city);
-}
-
 void repl_sort_by_distance(City_Array* city_arr)
 {
-    sort(city_arr, _compare);
+    City cmp = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
+    sort(city_arr, cmp);
     city_array_print(*city_arr);
     city_arr->sorted = true;
     printf("Les villes ont été triées par rapport à leur distance au \e[1;34mPole Nord.\e[0m");
@@ -254,6 +248,19 @@ void repl_sort_by_distance(City_Array* city_arr)
 #else
     printf(" \e[1;36m(merge sort)\e[0m\n");
 #endif
+}
+
+void repl_closest_to_me(City_Array* city_arr)
+{
+    double latitude, longitude;
+
+    printf("Entrez votre latitude : ");
+    scanf("%lf",&latitude);
+    printf("\nEntrez votre longitude : ");
+    scanf("%lf",&longitude);
+
+    City user = city_from_values("user",CITY_CODE_BYPASS,latitude,longitude);
+    sort(city_arr, user);
 }
 
 void repl(City_Array *city_arr)

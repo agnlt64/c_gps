@@ -3,24 +3,65 @@
 #include "utils.h"
 #include "sorting.h"
 
+static void print_row_border(int n)
+{
+    printf("+");
+    for (int i = 0; i <= n; i++)
+    {
+        printf("-");
+    }
+    printf("+\n");
+}
+
+int my_strlen(const char* str)
+{
+    int i = 0;
+    while (str[i] != '\0')
+    {
+        i++;
+    }
+    return i;
+}
+
 void repl_help()
 {
-    printf("\e[4;34mCommandes :\e[0m\n");
-    printf("+--------------------------------------------------------------+\n");
-    printf("| a - Ajoute une ville                                         |\n");
-    printf("| \e[1;31ms - Supprime une ville\e[0m                                       |\n");
-    printf("| \e[1;33mm - Modifie les données d'une ville\e[0m                          |\n");
-    printf("| l - Liste les villes                                         |\n");
-    printf("| o - Calcule la distance à vol d'oiseau entre 2 villes        |\n");
-    printf("| \e[1;32me - Exporte les données dans un fichier CSV\e[0m                  |\n");
-    printf("| r - Affiche la latitude et longitude d'une ville             |\n");
-    printf("| t - Trie les villes par rapport à leur distance au Pole Nord |\n");
-#ifdef DEBUG
-    printf("| d - Debug\e[0m                                                    |\n");
-#endif
-    printf("| \e[1;32mh - Affiche l'aide\e[0m                                           |\n");
-    printf("| \e[1;31mq - Quitte le programme\e[0m                                      |\n");
-    printf("+--------------------------------------------------------------+\n");
+
+    int padding = strlen("commande") - 1; // -1 parce que chaque commande fait 1 caractère de long
+    int max_len = 0;
+    for (size_t i = 0; i < NB_COMMANDS; i++)
+    {
+        if (desc_sizes[i] > max_len)
+            max_len = desc_sizes[i];
+    }
+    max_len += 5 + padding;
+
+    print_row_border(max_len);
+    printf("| \e[4;35mcommande\e[0m | \e[4;35mdescription\e[0m");
+    size_t it = max_len - 3 - (strlen("description") + strlen("commande"));
+    for (size_t i = 0; i < it; i++)
+    {
+        printf(" ");
+    }
+    printf("|\n");
+    print_row_border(max_len);
+
+    for (size_t i = 0; i < NB_COMMANDS; i++)
+    {
+        // padding vers la droite
+        printf("|");
+        for (size_t j = 0; j <= padding; j++)
+        {
+            printf(" ");
+        }
+        printf("\e[4;33m%s\e[0m", all_commands[i]);
+        printf(" | \e[0;34m%s\e[0m", commands_description[i]);
+        for (size_t j = 0; j < max_len - padding - 4 - desc_sizes[i]; j++)
+        {
+            printf(" ");
+        }
+        printf("|\n");
+    }
+    print_row_border(max_len);
 }
 
 bool repl_is_valid_command(const char *command)

@@ -184,8 +184,10 @@ void repl_search_city(City_Array *city_arr)
 
     } while (index == -1);
 
-    printf("\e[4;37mLatitude\e[0m  : \e[1;34m%lf\e[0m\n", city_arr->items[index].latitude);
-    printf("\e[4;37mLongitude\e[0m : \e[1;34m%lf\e[0m\n", city_arr->items[index].longitude);
+    City city = city_arr->items[index];
+    printf("\e[4;37mNom\e[0m : \e[1;34m%s\e[0m\n", city.name);
+    printf("\e[4;37mLatitude\e[0m : \e[1;34m%lf\e[0m\n", city.latitude);
+    printf("\e[4;37mLongitude\e[0m : \e[1;34m%lf\e[0m\n", city.longitude);
 }
 
 void repl_distance(City_Array city_arr)

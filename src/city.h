@@ -51,8 +51,8 @@ bool city_array_remove(City_Array* city_arr, int code);
 // Renvoie l'index de la ville stockée dans le tableau, -1 si la ville n'est pas trouvée
 int city_array_find(City_Array city_arr, int code);
 
-// Affiche le contenu du tableau de villes
-void city_array_print(City_Array city_arr);
+// Affiche le contenu du tableau de villes. Si n > 0, affiche les n premières villes
+void city_array_print(City_Array city_arr, int n);
 
 // Convertit un tableau de villes en données CSV
 char* city_arr_to_csv(City_Array city_arr);

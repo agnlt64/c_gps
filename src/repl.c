@@ -184,8 +184,10 @@ void repl_search_city(City_Array *city_arr)
 
     } while (index == -1);
 
-    printf("\e[4;37mLatitude\e[0m  : \e[1;34m%lf\e[0m\n", city_arr->items[index].latitude);
-    printf("\e[4;37mLongitude\e[0m : \e[1;34m%lf\e[0m\n", city_arr->items[index].longitude);
+    City city = city_arr->items[index];
+    printf("\e[4;37mNom\e[0m : \e[1;34m%s\e[0m\n", city.name);
+    printf("\e[4;37mLatitude\e[0m : \e[1;34m%lf\e[0m\n", city.latitude);
+    printf("\e[4;37mLongitude\e[0m : \e[1;34m%lf\e[0m\n", city.longitude);
 }
 
 void repl_distance(City_Array city_arr)
@@ -240,7 +242,7 @@ void repl_sort_by_distance(City_Array* city_arr)
 {
     City cmp = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
     sort(city_arr, cmp);
-    city_array_print(*city_arr);
+    city_array_print(*city_arr, PRINT_ALL);
     city_arr->sorted = true;
     printf("Les villes ont été triées par rapport à leur distance au \e[1;34mPole Nord.\e[0m");
 #ifdef COCKTAIL_SHAKER
@@ -259,7 +261,7 @@ void repl_closest_to_me(City_Array* city_arr)
     printf("\nEntrez votre longitude : ");
     scanf("%lf",&longitude);
 
-    City user = city_from_values("user",CITY_CODE_BYPASS,latitude,longitude);
+    City user = city_from_values("user", CITY_CODE_BYPASS, latitude, longitude);
     sort(city_arr, user);
 }
 
@@ -282,7 +284,7 @@ void repl(City_Array *city_arr)
                 repl_help();
                 break;
             case 'l':
-                city_array_print(*city_arr);
+                city_array_print(*city_arr, PRINT_ALL);
                 break;
             case 'a':
                 repl_add_city(city_arr);
@@ -306,7 +308,7 @@ void repl(City_Array *city_arr)
                 if (!city_arr->sorted)
                     repl_sort_by_distance(city_arr);
                 else
-                    city_array_print(*city_arr);
+                    city_array_print(*city_arr, PRINT_ALL);
                 break;
 #ifdef DEBUG
             case 'd':

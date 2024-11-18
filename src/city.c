@@ -118,7 +118,7 @@ static void print_row_border(int code_max_len, int name_max_len, int lat_max_len
         printf("+");
 }
 
-void city_array_print(City_Array city_arr)
+void city_array_print(City_Array city_arr, int n)
 {
     int code_max_len = 5;
     int lat_max_len = strlen("latitude") + 1;
@@ -144,7 +144,9 @@ void city_array_print(City_Array city_arr)
     printf("| \e[4;35mlatitude\e[0m  | \e[4;35mlongitude\e[0m   |\n");
     print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
     // affichage des données
-    for (size_t i = 0; i <= city_arr.count; i++)
+    for (size_t i = 0;
+         n == -1 ? i < city_arr.count : i < n;
+         i++)
     {
         if (city_ok(city_arr.items[i]))
         {

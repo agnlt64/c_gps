@@ -248,11 +248,12 @@ void repl_closest_to_me(City_Array* city_arr)
 
     printf("Entrez votre latitude : ");
     scanf("%lf",&latitude);
-    printf("\nEntrez votre longitude : ");
+    printf("Entrez votre longitude : ");
     scanf("%lf",&longitude);
 
     City user = city_from_values("user", CITY_CODE_BYPASS, latitude, longitude);
     sort(city_arr, user);
+    city_array_print(*city_arr, 10);
 }
 
 void repl(City_Array *city_arr)
@@ -299,6 +300,9 @@ void repl(City_Array *city_arr)
                     repl_sort_by_distance(city_arr);
                 else
                     city_array_print(*city_arr, PRINT_ALL);
+                break;
+            case 'c':
+                repl_closest_to_me(city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

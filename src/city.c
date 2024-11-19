@@ -103,7 +103,7 @@ char* city_arr_to_csv(City_Array city_arr)
 }
 
 // fonction interne non documentée parce que j'ai la flemme
-static void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len, bool newline)
+static void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len)
 {
     printf("+");
     for (size_t i = 0; i <= code_max_len + name_max_len + lat_max_len + lon_max_len + 3; i++)
@@ -112,10 +112,7 @@ static void print_row_border(int code_max_len, int name_max_len, int lat_max_len
         if (i == code_max_len + 1 || i == code_max_len + name_max_len + 3 || i == code_max_len + name_max_len + lat_max_len + 5)
             printf("+");
     }
-    if (newline)
-        printf("+\n");
-    else
-        printf("+");
+    printf("+\n");
 }
 
 void city_array_print(City_Array city_arr, int n)
@@ -133,16 +130,16 @@ void city_array_print(City_Array city_arr, int n)
                 name_max_len = len;
         }
     }
-    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, false);
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len);
 
     // affichage des noms de colonne
-    printf("\n| \e[4;35mcode\e[0m  | \e[4;35mnom\e[0m");
+    printf("| \e[4;35mcode\e[0m  | \e[4;35mnom\e[0m");
     for (size_t i = 0; i <= name_max_len - code_max_len + 2; i++)
     {
         printf(" ");
     }
     printf("| \e[4;35mlatitude\e[0m  | \e[4;35mlongitude\e[0m   |\n");
-    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len);
     // affichage des données
     for (size_t i = 0;
          n == -1 ? i < city_arr.count : i < n;
@@ -182,5 +179,5 @@ void city_array_print(City_Array city_arr, int n)
     }
 
     // affichage de la bordure inférieure du tableau
-    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len, true);
+    print_row_border(code_max_len, name_max_len, lat_max_len, lon_max_len);
 }

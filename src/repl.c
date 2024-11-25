@@ -103,10 +103,10 @@ void repl_get_city_code(City_Array city_arr, int* code, bool check_unique)
 
         if (!code_ok(*code))
             printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
-        else if (check_unique && !city_code_unique(city_arr, *code))
+        else if (check_unique && !city_array_code_unique(city_arr, *code))
             printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
 
-    } while (!code_ok(*code) || (check_unique && !city_code_unique(city_arr, *code)));
+    } while (!code_ok(*code) || (check_unique && !city_array_code_unique(city_arr, *code)));
 }
 
 void repl_add_city(City_Array* city_arr)

@@ -5,11 +5,6 @@ bool city_ok(City city)
     return city.name != NULL && city.code != -1 && city.latitude != -1 && city.longitude != -1;
 }
 
-bool city_code_unique(City_Array city_array, int code)
-{
-    return city_array_find(city_array, code) == -1;
-}
-
 City city_from_values(const char* name, int code, double latitude, double longitude)
 {
     if (code != CITY_CODE_BYPASS)
@@ -100,6 +95,11 @@ char* city_arr_to_csv(City_Array city_arr)
             strcat(buffer, "\n");
     }
     return buffer;
+}
+
+bool city_array_code_unique(City_Array city_array, int code)
+{
+    return city_array_find(city_array, code) == -1;
 }
 
 // fonction interne non documentée parce que j'ai la flemme

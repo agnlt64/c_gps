@@ -225,7 +225,7 @@ void repl_dump_to_csv(City_Array city_arr)
     fclose(file);
     
     free(csv);
-    printf("\e[1;32mContenu sauvegardé dans \e[4;31m`%s`\e[0m.\n", name);
+    printf("\e[1;32mContenu sauvegardé dans \e[1;36m`%s`\e[0m.\n", name);
 }
 
 void repl_sort_by_distance(City_Array* city_arr)

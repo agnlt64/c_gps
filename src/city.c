@@ -5,11 +5,6 @@ bool city_ok(City city)
     return city.name != NULL && city.code != -1 && city.latitude != -1 && city.longitude != -1;
 }
 
-bool city_code_unique(City_Array city_array, int code)
-{
-    return city_array_find(city_array, code) == -1;
-}
-
 City city_from_values(const char* name, int code, double latitude, double longitude)
 {
     if (code != CITY_CODE_BYPASS)
@@ -102,6 +97,11 @@ char* city_arr_to_csv(City_Array city_arr)
     return buffer;
 }
 
+bool city_array_code_unique(City_Array city_array, int code)
+{
+    return city_array_find(city_array, code) == -1;
+}
+
 // fonction interne non documentée parce que j'ai la flemme
 static void print_row_border(int code_max_len, int name_max_len, int lat_max_len, int lon_max_len)
 {
@@ -109,13 +109,15 @@ static void print_row_border(int code_max_len, int name_max_len, int lat_max_len
     for (size_t i = 0; i <= code_max_len + name_max_len + lat_max_len + lon_max_len + 3; i++)
     {
         printf("-");
-        if (i == code_max_len + 1 || i == code_max_len + name_max_len + 3 || i == code_max_len + name_max_len + lat_max_len + 5)
+        if (i == code_max_len + 1 ||
+            i == code_max_len + name_max_len + 3 ||
+            i == code_max_len + name_max_len + lat_max_len + 5)
             printf("+");
     }
     printf("+\n");
 }
 
-void city_array_print(City_Array city_arr, int n)
+void city_array_print(City_Array city_arr, int n, int* distances)
 {
     int code_max_len = 5;
     int lat_max_len = strlen("latitude") + 1;
@@ -125,7 +127,11 @@ void city_array_print(City_Array city_arr, int n)
     {
         if (city_ok(city_arr.items[i]))
         {
-            int len = strlen(city_arr.items[i].name);
+            char* name = malloc(strlen(city_arr.items[i].name) + 10);
+            strcpy(name, city_arr.items[i].name);
+            if (distances != NULL)
+                sprintf(name, "%s (%d km)", name, distances[i]);
+            int len = strlen(name);
             if (len > name_max_len)
                 name_max_len = len;
         }
@@ -148,8 +154,23 @@ void city_array_print(City_Array city_arr, int n)
         if (city_ok(city_arr.items[i]))
         {
             City city = city_arr.items[i];
-            printf("| \e[4;33m%d\e[0m | \e[0;34m%s\e[0m ", city.code, city.name);
-            for (size_t i = 0; i < name_max_len - strlen(city.name); i++)
+            int distance_pad = 0;
+            if (distances != NULL)
+            {
+                int distance = distances[i];
+                printf("| \e[4;33m%d\e[0m | \e[0;34m%s (%d km)\e[0m ", city.code, city.name, distance);
+                distance_pad = int_len(distance) == 4 ? 3 : 4;
+            }
+            else
+                printf("| \e[4;33m%d\e[0m | \e[0;34m%s\e[0m ", city.code, city.name);
+            size_t j = 0;
+            int max = name_max_len - strlen(city.name);
+            if (distances != NULL)
+            {
+                j = code_max_len + 2;
+                max = name_max_len - strlen(city.name) - distance_pad;
+            }
+            for (j; j < max; j++)
             {
                 printf(" ");
             }
@@ -164,13 +185,13 @@ void city_array_print(City_Array city_arr, int n)
                 printf("| \e[1;36m%.5f\e[0m |", city.latitude);
             if (city.longitude > 0)
             {
-                for (size_t i = 0; i <= 4 - int_len((int)city.longitude); i++)
+                for (size_t j = 0; j <= 4 - int_len((int)city.longitude); j++)
                     printf(" ");
                 printf(" \e[1;36m%.5f\e[0m |", city.longitude);
             }
             else
             {
-                for (size_t i = 0; i < 4 - int_len((int)fabs(city.longitude)) - 1; i++)
+                for (size_t j = 0; j < 4 - int_len((int)fabs(city.longitude)) - 1; j++)
                     printf(" ");
                 printf(" \e[1;36m%f\e[0m |", city.longitude);
             }

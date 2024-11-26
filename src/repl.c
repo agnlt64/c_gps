@@ -103,10 +103,10 @@ void repl_get_city_code(City_Array city_arr, int* code, bool check_unique)
 
         if (!code_ok(*code))
             printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
-        else if (check_unique && !city_code_unique(city_arr, *code))
+        else if (check_unique && !city_array_code_unique(city_arr, *code))
             printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
 
-    } while (!code_ok(*code) || (check_unique && !city_code_unique(city_arr, *code)));
+    } while (!code_ok(*code) || (check_unique && !city_array_code_unique(city_arr, *code)));
 }
 
 void repl_add_city(City_Array* city_arr)
@@ -225,15 +225,22 @@ void repl_dump_to_csv(City_Array city_arr)
     fclose(file);
     
     free(csv);
-    printf("\e[1;32mContenu sauvegardé dans \e[4;31m`%s`\e[0m.\n", name);
+    printf("\e[1;32mContenu sauvegardé dans \e[1;36m`%s`\e[0m.\n", name);
 }
 
 void repl_sort_by_distance(City_Array* city_arr)
 {
     City cmp = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
     sort(city_arr, cmp);
-    city_array_print(*city_arr, PRINT_ALL);
     city_arr->sorted = true;
+
+    int* distances = malloc(city_arr->count * sizeof(int));
+    for (size_t i = 0; i < city_arr->count; i++)
+    {
+        distances[i] = (int)city_distance(city_arr->items[i], cmp);
+    }
+    city_array_print(*city_arr, PRINT_ALL, distances);
+
     printf("Les villes ont été triées par rapport à leur distance au \e[1;34mPole Nord.\e[0m");
 #ifdef COCKTAIL_SHAKER
     printf(" \e[1;36m(cocktail shaker)\e[0m\n");
@@ -253,7 +260,7 @@ void repl_closest_to_me(City_Array* city_arr)
 
     City user = city_from_values("user", CITY_CODE_BYPASS, latitude, longitude);
     sort(city_arr, user);
-    city_array_print(*city_arr, 10);
+    city_array_print(*city_arr, 10, NULL);
 }
 
 void repl(City_Array *city_arr)
@@ -275,7 +282,7 @@ void repl(City_Array *city_arr)
                 repl_help();
                 break;
             case 'l':
-                city_array_print(*city_arr, PRINT_ALL);
+                city_array_print(*city_arr, PRINT_ALL, NULL);
                 break;
             case 'a':
                 repl_add_city(city_arr);
@@ -299,7 +306,7 @@ void repl(City_Array *city_arr)
                 if (!city_arr->sorted)
                     repl_sort_by_distance(city_arr);
                 else
-                    city_array_print(*city_arr, PRINT_ALL);
+                    city_array_print(*city_arr, PRINT_ALL, NULL);
                 break;
             case 'c':
                 repl_closest_to_me(city_arr);

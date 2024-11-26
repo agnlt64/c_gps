@@ -50,7 +50,7 @@ int city_array_find(City_Array city_arr, int code);
 bool city_array_code_unique(City_Array city_arr, int code);
 
 // Affiche le contenu du tableau de villes. Si n > 0, affiche les n premières villes
-void city_array_print(City_Array city_arr, int n);
+void city_array_print(City_Array city_arr, int n, int* distances);
 
 // Convertit un tableau de villes en données CSV
 char* city_arr_to_csv(City_Array city_arr);

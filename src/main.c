@@ -25,7 +25,7 @@ int main(int argc, char* argv[])
     repl(&city_arr);
 
     fclose(file);
-    free(city_arr.items);
+    city_array_free(city_arr);
 
     return 0;
 }

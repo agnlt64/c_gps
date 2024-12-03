@@ -10,7 +10,7 @@
 #define NB_COMMANDS 12
 #endif
 
-static const char* all_commands[NB_COMMANDS] = {
+const char* all_commands[NB_COMMANDS] = {
     "a",
     "s",
     "m",
@@ -28,7 +28,7 @@ static const char* all_commands[NB_COMMANDS] = {
     "q",
 };
 
-static const char* commands_description[NB_COMMANDS] = {
+const char* commands_description[NB_COMMANDS] = {
     "Ajoute une ville",
     "Supprime une ville",
     "Modifie les données d'une ville",

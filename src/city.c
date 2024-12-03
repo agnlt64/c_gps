@@ -50,6 +50,11 @@ void city_array_init(City_Array *city_arr)
     city_arr->sorted = false;
 }
 
+void city_array_free(City_Array city_arr)
+{
+    free(city_arr.items);
+}
+
 void city_array_add(City_Array *city_arr, City city)
 {
     if (city_arr->count >= city_arr->capacity)

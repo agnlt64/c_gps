@@ -37,6 +37,9 @@ typedef struct {
 // Initialise un tableau dynamique de villes
 void city_array_init(City_Array* city_arr);
 
+// Libère la mémoire allouée pour le tableau dynamique de villes
+void city_array_free(City_Array city_arr);
+
 // Ajoute une ville au tableau dynamique
 void city_array_add(City_Array* city_arr, City item);
 

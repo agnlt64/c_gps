@@ -99,15 +99,21 @@ void repl_get_city_name(char *name)
 
 void repl_get_city_code(City_Array city_arr, int *code, bool check_unique)
 {
+    char buf[BUF_SIZE];
     do
     {
         printf("Code de la ville : ");
-        scanf("%d", code);
+        scanf(" %[^\n]", buf);
 
-        if (!code_ok(*code))
+        if (!digits_only(buf) || !code_ok(atoi(buf)))
             printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
-        else if (check_unique && !city_array_code_unique(city_arr, *code))
-            printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
+        else
+            *code = atoi(buf);
+
+        // if (!code_ok(*code))
+        //     printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
+        // else if (check_unique && !city_array_code_unique(city_arr, *code))
+        //     printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
 
     } while (!code_ok(*code) || (check_unique && !city_array_code_unique(city_arr, *code)));
 }
@@ -159,8 +165,9 @@ void repl_delete_city(City_Array *city_arr)
 
     } while (index == -1);
 
+    City city = city_arr->items[index];
     if (city_array_remove(city_arr, code))
-        printf("\e[1;32mLa ville avec le code \e[1;31m%d\e[1;32m a été supprimée.\e[0m\n", code);
+        printf("La ville de \e[0;34m%s\e[0m (code %d) a été supprimée.\n", city.name, code);
     city_arr->sorted = false;
 }
 

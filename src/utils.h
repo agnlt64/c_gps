@@ -2,6 +2,7 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
+#include <ctype.h>
 #include <stdbool.h>
 
 #define BUF_SIZE 256
@@ -26,3 +27,6 @@ bool lon_ok(double longitude);
 
 // Vérifie si le code est correct
 bool code_ok(int code);
+
+// Vérifie si la chaîne de caractères ne contient que des chiffres
+bool digits_only(char* s);

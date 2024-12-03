@@ -5,9 +5,9 @@
 #include "city.h"
 
 #ifdef DEBUG
-#define NB_COMMANDS 12
+#define NB_COMMANDS 13
 #else
-#define NB_COMMANDS 11
+#define NB_COMMANDS 12
 #endif
 
 static const char* all_commands[NB_COMMANDS] = {
@@ -20,6 +20,7 @@ static const char* all_commands[NB_COMMANDS] = {
     "r",
     "t",
     "c",
+    "f",
 #ifdef DEBUG
     "d",
 #endif
@@ -37,6 +38,7 @@ static const char* commands_description[NB_COMMANDS] = {
     "Affiche la latitude et longitude d'une ville",
     "Trie les villes par rapport à leur distance au Pole Nord",
     "Affiche les 10 villes les plus proches de l'utilisateur",
+    "Affiche la distance entre l'utilisateur et une ville donnée",
 #ifdef DEBUG
     "Debug",
 #endif
@@ -57,6 +59,7 @@ static const int desc_sizes[NB_COMMANDS] = {
     44,
     56,
     55,
+    59,
 #ifdef DEBUG
     5,
 #endif
@@ -99,6 +102,9 @@ void repl_sort_by_distance(City_Array* city_arr);
 
 // Affiche les 10 villes les plus proches de l'utilisateur
 void repl_closest_to_me(City_Array* city_arr);
+
+// Affiche la distance minimale entre l'utilisateur et une ville
+void repl_how_far_from_me(City_Array city_arr);
 
 // Fonction principale du REPL
 void repl(City_Array* city_arr);

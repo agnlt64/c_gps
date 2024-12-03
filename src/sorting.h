@@ -2,12 +2,6 @@
 
 #include "city.h"
 
-// Fusionne les tableaux a et b en un seul tableau trié
-static inline void _merge(City* arr, int left, int right, int end, City* work_arr, City cmp);
-
-// Echange deux villes
-static inline void _swap(City* a, City* b);
-
 // Trie le tableau arr avec un tri fusion
 void _merge_sort(City* arr, City* work_arr, int n, City cmp);
 

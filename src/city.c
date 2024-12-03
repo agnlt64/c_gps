@@ -5,7 +5,7 @@ bool city_ok(City city)
     return city.name != NULL && city.code != -1 && city.latitude != -1 && city.longitude != -1;
 }
 
-City city_from_values(const char* name, int code, double latitude, double longitude)
+City city_from_values(const char *name, int code, double latitude, double longitude)
 {
     if (code != CITY_CODE_BYPASS)
     {
@@ -22,7 +22,7 @@ City city_from_values(const char* name, int code, double latitude, double longit
     };
 }
 
-double city_distance(City city1, City city2) 
+double city_distance(City city1, City city2)
 {
     double lA   = city1.longitude * TO_RAD;
     double lB   = city2.longitude * TO_RAD;
@@ -35,14 +35,14 @@ double city_distance(City city1, City city2)
     return distance;
 }
 
-char* city_to_csv(City city)
+char *city_to_csv(City city)
 {
-    char* buffer = malloc(BUF_SIZE);
+    char *buffer = malloc(BUF_SIZE);
     snprintf(buffer, BUF_SIZE, "%d;%s;%lf;%lf", city.code, city.name, city.latitude, city.longitude);
     return buffer;
 }
 
-void city_array_init(City_Array* city_arr)
+void city_array_init(City_Array *city_arr)
 {
     city_arr->items = malloc(MAX_FILE_SIZE * sizeof(City));
     city_arr->count = 0;
@@ -50,9 +50,9 @@ void city_array_init(City_Array* city_arr)
     city_arr->sorted = false;
 }
 
-void city_array_add(City_Array* city_arr, City city)
+void city_array_add(City_Array *city_arr, City city)
 {
-    if (city_arr->count >= city_arr->   capacity)
+    if (city_arr->count >= city_arr->capacity)
         city_arr->items = realloc(city_arr->items, city_arr->capacity * sizeof(city_arr->items));
     city_arr->items[city_arr->count++] = city;
 }
@@ -67,10 +67,10 @@ int city_array_find(City_Array city_arr, int code)
     return -1;
 }
 
-bool city_array_remove(City_Array* city_arr, int code)
+bool city_array_remove(City_Array *city_arr, int code)
 {
     int index = city_array_find(*city_arr, code);
-    if (index != -1) 
+    if (index != -1)
     {
         city_arr->items[index] = (City){0};
         for (size_t i = index; i < city_arr->count - 1; i++)
@@ -81,14 +81,14 @@ bool city_array_remove(City_Array* city_arr, int code)
     return false;
 }
 
-char* city_arr_to_csv(City_Array city_arr)
+char *city_arr_to_csv(City_Array city_arr)
 {
-    char* buffer = malloc(city_arr.count * BUF_SIZE);
+    char *buffer = malloc(city_arr.count * BUF_SIZE);
     buffer[0] = '\0';
 
     for (int i = 1; i < city_arr.count; i++)
     {
-        char* city_csv = city_to_csv(city_arr.items[i]);
+        char *city_csv = city_to_csv(city_arr.items[i]);
         strcat(buffer, city_csv);
         free(city_csv);
         if (i < city_arr.count - 1)
@@ -117,7 +117,7 @@ static void print_row_border(int code_max_len, int name_max_len, int lat_max_len
     printf("+\n");
 }
 
-void city_array_print(City_Array city_arr, int n, int* distances)
+void city_array_print(City_Array city_arr, int n, int *distances)
 {
     int code_max_len = 5;
     int lat_max_len = strlen("latitude") + 1;
@@ -127,7 +127,7 @@ void city_array_print(City_Array city_arr, int n, int* distances)
     {
         if (city_ok(city_arr.items[i]))
         {
-            char* name = malloc(strlen(city_arr.items[i].name) + 10);
+            char *name = malloc(strlen(city_arr.items[i].name) + 10);
             strcpy(name, city_arr.items[i].name);
             if (distances != NULL)
                 sprintf(name, "%s (%d km)", name, distances[i]);

@@ -71,22 +71,24 @@ void repl_get_city_infos(City_Array city_arr, char *name, int *code, double *lat
     repl_get_city_name(name);
     repl_get_city_code(city_arr, code, true);
 
-    do {
+    do
+    {
         printf("Latitude : ");
         scanf("%lf", latitude);
 
         if (!lat_ok(*latitude))
             printf("\e[0;31mLa latitude doit être comprise entre -90 et 90.\e[0m\n");
-    } while(!lat_ok(*latitude));
+    } while (!lat_ok(*latitude));
 
-    do {
+    do
+    {
         printf("Longitude : ");
         scanf("%lf", longitude);
 
         if (!lon_ok(*longitude))
             printf("\e[0;31mLa longitude doit être comprise entre -180 et 180.\e[0m\n");
 
-    } while(!lon_ok(*longitude));
+    } while (!lon_ok(*longitude));
 }
 
 void repl_get_city_name(char *name)
@@ -95,22 +97,29 @@ void repl_get_city_name(char *name)
     scanf(" %[^\n]", name);
 }
 
-void repl_get_city_code(City_Array city_arr, int* code, bool check_unique)
+void repl_get_city_code(City_Array city_arr, int *code, bool check_unique)
 {
-    do {
+    char buf[BUF_SIZE];
+    do
+    {
         printf("Code de la ville : ");
-        scanf("%d", code);
+        scanf(" %[^\n]", buf);
 
-        if (!code_ok(*code))
+        if (!digits_only(buf) || !code_ok(atoi(buf)))
             printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
-        else if (check_unique && !city_array_code_unique(city_arr, *code))
-            printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
+        else
+            *code = atoi(buf);
+
+        // if (!code_ok(*code))
+        //     printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
+        // else if (check_unique && !city_array_code_unique(city_arr, *code))
+        //     printf("\e[0;31mUne ville avec ce code existe déjà.\e[0m\n");
 
     } while (!code_ok(*code) || (check_unique && !city_array_code_unique(city_arr, *code)));
 }
 
-void repl_add_city(City_Array* city_arr)
-{ 
+void repl_add_city(City_Array *city_arr)
+{
     char name[BUF_SIZE];
     int code;
     double latitude;
@@ -121,7 +130,7 @@ void repl_add_city(City_Array* city_arr)
     printf("\e[1;32mLa ville %s (code %d) a été ajoutée.\e[0m\n", name, code);
 }
 
-void repl_modify_city(City_Array* city_arr)
+void repl_modify_city(City_Array *city_arr)
 {
     int code;
     int index = -1;
@@ -156,8 +165,9 @@ void repl_delete_city(City_Array *city_arr)
 
     } while (index == -1);
 
+    City city = city_arr->items[index];
     if (city_array_remove(city_arr, code))
-        printf("\e[1;32mLa ville avec le code \e[1;31m%d\e[1;32m a été supprimée.\e[0m\n", code);
+        printf("La ville de \e[0;34m%s\e[0m (code %d) a été supprimée.\n", city.name, code);
     city_arr->sorted = false;
 }
 
@@ -186,15 +196,20 @@ void repl_distance(City_Array city_arr)
     int index1 = -1;
     int index2 = -1;
 
-    for (int i = 0; i < 2; i++) {
-        do {
+    for (int i = 0; i < 2; i++)
+    {
+        do
+        {
             repl_get_city_code(city_arr, &code, false);
 
-            if (i == 0) {
+            if (i == 0)
+            {
                 index1 = city_array_find(city_arr, code);
                 if (index1 == -1)
                     printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
-            } else {
+            }
+            else
+            {
                 index2 = city_array_find(city_arr, code);
                 if (index2 == -1)
                     printf("\e[1;31mLa ville avec le code %d n'existe pas.\e[0m\n", code);
@@ -212,29 +227,29 @@ void repl_dump_to_csv(City_Array city_arr)
     char name[BUF_SIZE];
     printf("Nom du fichier : ");
     scanf(" %[^\n]", &name);
-    
-    FILE* file = fopen(name, "w");
+
+    FILE *file = fopen(name, "w");
     if (file == NULL)
     {
         printf("\e[1;31mErreur lors de l'ouverture du fichier \e[4;31m`%s`\e[0m\n", name);
         return;
     }
     fprintf(file, "code;name;latitude;longitude\n");
-    char* csv = city_arr_to_csv(city_arr);
+    char *csv = city_arr_to_csv(city_arr);
     fprintf(file, "%s", csv);
     fclose(file);
-    
+
     free(csv);
     printf("\e[1;32mContenu sauvegardé dans \e[1;36m`%s`\e[0m.\n", name);
 }
 
-void repl_sort_by_distance(City_Array* city_arr)
+void repl_sort_by_distance(City_Array *city_arr)
 {
     City cmp = city_from_values("Pole Nord", CITY_CODE_BYPASS, 90, 0);
     sort(city_arr, cmp);
     city_arr->sorted = true;
 
-    int* distances = malloc(city_arr->count * sizeof(int));
+    int *distances = malloc(city_arr->count * sizeof(int));
     for (size_t i = 0; i < city_arr->count; i++)
     {
         distances[i] = (int)city_distance(city_arr->items[i], cmp);
@@ -249,18 +264,60 @@ void repl_sort_by_distance(City_Array* city_arr)
 #endif
 }
 
-void repl_closest_to_me(City_Array* city_arr)
+void repl_closest_to_me(City_Array *city_arr)
 {
     double latitude, longitude;
 
     printf("Entrez votre latitude : ");
-    scanf("%lf",&latitude);
+    scanf("%lf", &latitude);
     printf("Entrez votre longitude : ");
-    scanf("%lf",&longitude);
+    scanf("%lf", &longitude);
 
     City user = city_from_values("user", CITY_CODE_BYPASS, latitude, longitude);
     sort(city_arr, user);
     city_array_print(*city_arr, 10, NULL);
+}
+
+void repl_how_far_from_me(City_Array city_arr)
+{
+    double latitude, longitude;
+    int code;
+
+    do
+    {
+        printf("Latitude : ");
+        scanf("%lf", &latitude);
+
+        if (!lat_ok(latitude))
+            printf("\e[0;31mLa latitude doit être comprise entre -90 et 90.\e[0m\n");
+    } while (!lat_ok(latitude));
+
+    do
+    {
+        printf("Longitude : ");
+        scanf("%lf", &longitude);
+
+        if (!lon_ok(longitude))
+            printf("\e[0;31mLa longitude doit être comprise entre -180 et 180.\e[0m\n");
+
+    } while (!lon_ok(longitude));
+
+    int index = -1;
+    do
+    {
+        repl_get_city_code(city_arr, &code, false);
+        index = city_array_find(city_arr, code);
+        if (index == -1)
+        {
+            printf("\e[0;31mAucune ville avec ce code n'a été trouvée.\e[0m\n");
+        }
+    } while (index == -1);
+
+    City user_city = city_from_values("ville de l'utilisateur", CITY_CODE_BYPASS, latitude, longitude);
+    City city = city_arr.items[index];
+
+    double distance = city_distance(user_city, city);
+    printf("La distance entre l'utilisateur et la ville de \e[1;34m%s\e[0m est de %.3f km.\n", city.name, distance);
 }
 
 void repl(City_Array *city_arr)
@@ -310,6 +367,9 @@ void repl(City_Array *city_arr)
                 break;
             case 'c':
                 repl_closest_to_me(city_arr);
+                break;
+            case 'f':
+                repl_how_far_from_me(*city_arr);
                 break;
 #ifdef DEBUG
             case 'd':

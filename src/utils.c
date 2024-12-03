@@ -20,3 +20,15 @@ bool code_ok(int code)
 {
     return int_len(code) == 5;
 }
+
+bool digits_only(char* s)
+{
+    char* p = s;
+    while (*p)
+    {
+        if (!isdigit(*p))
+            return false;
+        p++;
+    }
+    return true;
+}

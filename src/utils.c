@@ -21,14 +21,23 @@ bool code_ok(int code)
     return int_len(code) == 5;
 }
 
-bool digits_only(char* s)
+bool is_int(const char* s)
 {
-    char* p = s;
+    const char* p = s;
     while (*p)
     {
-        if (!isdigit(*p))
+        if (!isdigit(*p++))
             return false;
-        p++;
     }
     return true;
+}
+
+// for more details see this SO question:
+// https://stackoverflow.com/questions/45554639/is-there-a-way-to-check-if-a-string-can-be-a-float-in-c
+bool is_float(const char* s)
+{
+    int len;
+    float ignore;
+    int ret = sscanf(s, "%f %n", &ignore, &len);
+    return ret == 1 && !s[len];
 }

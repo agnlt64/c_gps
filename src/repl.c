@@ -70,25 +70,7 @@ void repl_get_city_infos(City_Array city_arr, char *name, int *code, double *lat
 {
     repl_get_city_name(name);
     repl_get_city_code(city_arr, code, true);
-
-    do
-    {
-        printf("Latitude : ");
-        scanf("%lf", latitude);
-
-        if (!lat_ok(*latitude))
-            printf("\e[0;31mLa latitude doit être comprise entre -90 et 90.\e[0m\n");
-    } while (!lat_ok(*latitude));
-
-    do
-    {
-        printf("Longitude : ");
-        scanf("%lf", longitude);
-
-        if (!lon_ok(*longitude))
-            printf("\e[0;31mLa longitude doit être comprise entre -180 et 180.\e[0m\n");
-
-    } while (!lon_ok(*longitude));
+    repl_get_user_loc(latitude, longitude);
 }
 
 void repl_get_city_name(char *name)
@@ -99,40 +81,67 @@ void repl_get_city_name(char *name)
 
 void repl_get_user_loc(double* latitude, double* longitude)
 {
+    char buf[BUF_SIZE];
+    bool ok = false;
     do
     {
         printf("Latitude : ");
-        scanf("%lf", latitude);
+        scanf(" %[^\n]", buf);
+        double lat = atof(buf);
 
-        if (!lat_ok(*latitude))
+        if (!is_float(buf))
+            printf("\e[0;31mLa latitude doit être un nombre réel.\e[0m\n");
+        else if (!lat_ok(lat))
             printf("\e[0;31mLa latitude doit être comprise entre -90 et 90.\e[0m\n");
-    } while (!lat_ok(*latitude));
+        else
+        {
+            *latitude = lat;
+            ok = true;
+        }
+    } while (!ok);
 
+    ok = false;
     do
     {
         printf("Longitude : ");
-        scanf("%lf", longitude);
+        scanf(" %[^\n]", buf);
+        double lon = atof(buf);
 
-        if (!lon_ok(*longitude))
+        if (!is_float(buf))
+            printf("\e[0;31mLa longitude doit être un nombre réel.\e[0m\n");
+        else if (!lon_ok(lon))
             printf("\e[0;31mLa longitude doit être comprise entre -180 et 180.\e[0m\n");
-
-    } while (!lon_ok(*longitude));
+        else
+        {
+            *longitude = lon;
+            ok = true;
+        }
+    } while (!ok);
 }
 
 void repl_get_city_code(City_Array city_arr, int *code, bool check_unique)
 {
     char buf[BUF_SIZE];
+    bool ok = false;
     do
     {
         printf("Code de la ville : ");
         scanf(" %[^\n]", buf);
+        int code_int = atoi(buf);
 
-        if (!digits_only(buf) || !code_ok(atoi(buf)))
+        if (!is_int(buf))
+            printf("\e[0;31mLe code de la ville doit être un nombre entier.\e[0m\n");
+        else if (!code_ok(code_int))
             printf("\e[0;31mLe code de la ville doit être composé de 5 chiffres.\e[0m\n");
+        else if (check_unique && !city_array_code_unique(city_arr, code_int))
+            printf("\e[0;31mLe code de la ville doit être unique.\e[0m\n");
         else
-            *code = atoi(buf);
+        {
+            *code = code_int;
+            ok = true;
+        }
 
-    } while (!code_ok(*code) || (check_unique && !city_array_code_unique(city_arr, *code)));
+    } while (!ok);
 }
 
 void repl_add_city(City_Array *city_arr)

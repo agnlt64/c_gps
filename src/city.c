@@ -62,19 +62,23 @@ void city_array_add(City_Array *city_arr, City city)
     city_arr->items[city_arr->count++] = city;
 }
 
-int city_array_find(City_Array city_arr, int code)
+int city_array_find(City_Array city_arr, int code, City *city)
 {
     for (int i = 0; i < city_arr.count; i++)
     {
         if (city_arr.items[i].code == code)
+        {
+            if (city != NULL)
+                *city = city_arr.items[i];
             return i;
+        }
     }
     return -1;
 }
 
 bool city_array_remove(City_Array *city_arr, int code)
 {
-    int index = city_array_find(*city_arr, code);
+    int index = city_array_find(*city_arr, code, NULL);
     if (index != -1)
     {
         city_arr->items[index] = (City){0};
@@ -104,7 +108,7 @@ char *city_arr_to_csv(City_Array city_arr)
 
 bool city_array_code_unique(City_Array city_array, int code)
 {
-    return city_array_find(city_array, code) == -1;
+    return city_array_find(city_array, code, NULL) == -1;
 }
 
 // fonction interne non documentée parce que j'ai la flemme

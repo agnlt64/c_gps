@@ -46,8 +46,9 @@ void city_array_add(City_Array* city_arr, City item);
 // Supprime ville du tableau. Renvoie true si la donnée a été supprimée, false sinon
 bool city_array_remove(City_Array* city_arr, int code);
 
-// Renvoie l'index de la ville stockée dans le tableau, -1 si la ville n'est pas trouvée
-int city_array_find(City_Array city_arr, int code);
+// Renvoie l'index de la ville stockée dans le tableau, -1 si la ville n'est pas trouvée.
+// city est un pointeur vers la ville trouvée
+int city_array_find(City_Array city_arr, int code, City* city);
 
 // Vérifie si le code est unique
 bool city_array_code_unique(City_Array city_arr, int code);

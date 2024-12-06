@@ -4,6 +4,7 @@
 
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdio.h>
 
 #define BUF_SIZE 256
 #define MAX_FILE_SIZE 1024
@@ -29,4 +30,7 @@ bool lon_ok(double longitude);
 bool code_ok(int code);
 
 // Vérifie si la chaîne de caractères ne contient que des chiffres
-bool digits_only(char* s);
+bool is_int(const char* s);
+
+// Vérifie si la chaîne de caractères est un float
+bool is_float(const char* s);

@@ -10,7 +10,7 @@
 #define NB_COMMANDS 12
 #endif
 
-const char* all_commands[NB_COMMANDS] = {
+static const char* all_commands[NB_COMMANDS] = {
     "a",
     "s",
     "m",
@@ -28,7 +28,7 @@ const char* all_commands[NB_COMMANDS] = {
     "q",
 };
 
-const char* commands_description[NB_COMMANDS] = {
+static const char* commands_description[NB_COMMANDS] = {
     "Ajoute une ville",
     "Supprime une ville",
     "Modifie les données d'une ville",
@@ -81,6 +81,9 @@ void repl_get_city_name(char* name);
 
 // Récupère le code d'une ville à partir de la console
 void repl_get_city_code(City_Array city_arr, int* code, bool check_unique);
+
+// Récupère la latitude et la longitude de l'utilisateur
+void repl_get_user_loc(double* latitude, double* longitude);
 
 // Ajoute une ville au tableau
 void repl_add_city(City_Array* city_arr);

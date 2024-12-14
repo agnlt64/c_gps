@@ -1,6 +1,6 @@
 #include "csv.h"
 
-void read_csv(FILE* file, City_Array* city_arr)
+void read_csv(FILE* file, City_Array* city_arr, const char* separator)
 {
     size_t i = 0;
     while (!feof(file))
@@ -11,7 +11,7 @@ void read_csv(FILE* file, City_Array* city_arr)
         char buf[BUF_SIZE];
         fgets(buf, BUF_SIZE, file);
 
-        char* token = strtok(buf, ";");
+        char* token = strtok(buf, separator);
 
         while (token)
         {

@@ -39,7 +39,7 @@ void read_csv(FILE* file, City_Array* city_arr, const char* separator)
                     break;
                 }
             }
-            token = strtok(NULL, ";");
+            token = strtok(NULL, separator);
             col_index = (col_index + 1) % 4;
         }
         city_arr->count = i++;

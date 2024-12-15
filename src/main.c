@@ -24,6 +24,7 @@ int main(int argc, char* argv[])
         usage(argv[0]);
         if (strcmp(argv[2], "-s") != 0)
             fprintf(stderr, "Error: %s is not a valid argument", argv[2]);
+        return 1;
     }
     else if (argc >= 4)
     {

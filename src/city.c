@@ -195,7 +195,12 @@ void city_array_print(City_Array city_arr, int n, int *distances)
                     printf("|  \e[1;36m%.5f\e[0m |", city.latitude);
             }
             else
-                printf("| \e[1;36m%.5f\e[0m |", city.latitude);
+            {
+                if (int_len((int)fabs(city.latitude)) == 1)
+                    printf("|  \e[1;36m%.5f\e[0m |", city.latitude);
+                else
+                    printf("| \e[1;36m%.5f\e[0m |", city.latitude);
+            }
             if (city.longitude > 0)
             {
                 for (size_t j = 0; j <= 4 - int_len((int)city.longitude); j++)
